@@ -92,7 +92,7 @@ const Navber = () => {
 
                 <div className="navbar-end space-x-2 ">
                     <Link to={"/login"} className="flex items-center justify-center gap-2 hover:text-[#0b8260]"><FiLogIn /> Log In</Link>
-                    <Link to={"/signup"} className="bg-[#0b8260] hover:bg-[#3b6e60] p-10 py-4 rounded-sm text-white flex justify-center items-center gap-2"><FaUserCheck /> Sign Up Now</Link>
+                    <Link to={"/signup"} className="bg-[#0b8260] hover:bg-[#3b6e6003] border border-[#ffffff00] hover:border-[#0b8260] hover:text-[#0b8260] p-10 py-4 rounded-sm text-white flex justify-center items-center gap-2 transition-all"><FaUserCheck /> Sign Up Now</Link>
                 </div>
             </motion.div >
         </div >
