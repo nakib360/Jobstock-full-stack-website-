@@ -91,7 +91,7 @@ const Navber = () => {
                 </div >
 
                 <div className="navbar-end space-x-2 ">
-                    <Link to={"/signin"} className="flex items-center justify-center gap-2 hover:text-[#0b8260]"><FiLogIn /> Sign In</Link>
+                    <Link to={"/login"} className="flex items-center justify-center gap-2 hover:text-[#0b8260]"><FiLogIn /> Log In</Link>
                     <Link to={"/signup"} className="bg-[#0b8260] hover:bg-[#3b6e60] p-10 py-4 rounded-sm text-white flex justify-center items-center gap-2"><FaUserCheck /> Sign Up Now</Link>
                 </div>
             </motion.div >
