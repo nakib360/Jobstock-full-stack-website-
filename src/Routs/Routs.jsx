@@ -10,6 +10,18 @@ const rout = createBrowserRouter([
             {
                 path: "/",
                 element: <HomePage/>
+            },
+            {
+                path: "/appliedJobs",
+                element: <div>Applied Jobs</div>
+            },
+            {
+                path: "/blog",
+                element: <div>Blog</div>
+            },
+            {
+                path: "/dashboard",
+                element: <div>Dashboard</div>
             }
         ]
     },
