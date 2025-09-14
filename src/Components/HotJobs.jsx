@@ -25,7 +25,7 @@ const HotJobs = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {
                     loading ? (
-                        Array(4).fill().map((_, i) => <SkeletonLoader key={i} />)
+                        Array(4).fill().map((_, idx) => <SkeletonLoader key={idx} />)
                     ) : (
                         data.map(job => <JobCard key={job.id} loading={loading} job={job} />)
                     )

@@ -3,10 +3,12 @@ import "../index.css";
 import Navber from "../Components/Navber";
 import { Helmet } from "react-helmet";
 import logo from "../../public/favicon.ico";
+import "../index.css";
+import Footer from "../Components/Footer";
 
 const MainLayout = () => {
   return (
-    <div className="min-h-screen bg-white text-black roboto overflow-x-hidden" >
+    <div className="min-h-screen bg-white text-black roboto overflow-x-hidden bg-dot" >
       <Helmet>
         <title>JOB STOCK - Find Your Dream Job</title>
         <meta name="description" content="Best job search platform for your career." />
@@ -15,6 +17,7 @@ const MainLayout = () => {
 
       <Navber />
       <Outlet />
+      <Footer/>
     </div>
   );
 };

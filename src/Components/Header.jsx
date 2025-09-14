@@ -6,7 +6,7 @@ import "../index.css";
 
 const Header = () => {
   return (
-    <header className="relative w-full min-h-[90vh] font-roboto bg-gray-200 bg-grid overflow-hidden">
+    <header className="relative w-full min-h-[90vh] font-roboto bg-gray-200 bg-grid overflow-hidden ">
       {/* Background images */}
       <motion.img
         animate={{ x: 290, y: 160 }}

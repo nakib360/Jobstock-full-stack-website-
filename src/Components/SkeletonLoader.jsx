@@ -4,7 +4,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 const SkeletonLoader = () => {
     return (
         <div>
-            <div className="relative bg-white rounded-xl p-5 max-w-100 border border-black space-y-2">
+            <div className="relative bg-white rounded-xl p-5 max-w-100 border border-gray-200 space-y-2">
                 <div className="flex flex-col items-center gap-2">
                     {/* Job Type Badge */}
                     <div className="absolute right-5">

@@ -1,27 +1,57 @@
-import * as motion from "motion/react-client"
-import logo from "../../public/jobsStockIcon.png"
+import * as motion from "motion/react-client";
+import logo from "../../public/jobsStockIcon.png";
 import { Link, NavLink } from "react-router";
 import { FaUserCheck } from "react-icons/fa";
 import { FiLogIn } from "react-icons/fi";
+import { useState, useEffect } from "react";
 
 const Navber = () => {
+    const [show, setShow] = useState(true); // navbar visible by default
+    const [lastScrollY, setLastScrollY] = useState(0);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY > lastScrollY && currentScrollY > 50) {
+                // scroll down → hide
+                setShow(false);
+            } else {
+                // scroll up → show
+                setShow(true);
+            }
+
+            setLastScrollY(currentScrollY);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [lastScrollY]);
+
     const links = [
         { name: "Home", to: "/" },
         { name: "Dashboard", to: "/dashboard" },
         { name: "Applied Jobs", to: "/appliedJobs" },
         { name: "Blog", to: "/blog" },
-    ]
+    ];
 
     return (
-        <div>
-            <motion.div transition={{ duration: 1 }} className="navbar shadow-sm p-5 px-20">
-                <div className="navbar-start flex items-center justify-start gap-10">
-                    {/* Dropdown for mobile */}
-                    <div className="dropdown">
+        <motion.div
+            initial={{ y: 0 }}
+            animate={{ y: show ? 0 : -120 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="fixed top-0 left-0 w-full bg-white shadow-sm z-50"
+        >
+            <div className="navbar p-5 px-20 flex justify-between items-center">
+                {/* Navbar Start */}
+                <div className="flex items-center gap-10">
+                    {/* Mobile dropdown */}
+                    <div className="dropdown lg:hidden">
                         <div
                             tabIndex={0}
                             role="button"
-                            className="btn btn-ghost lg:hidden flex items-center"
+                            className="btn btn-ghost flex items-center"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -44,22 +74,24 @@ const Navber = () => {
                         >
                             {links.map((link, idx) => (
                                 <li className="hover:text-[#0b8260]" key={idx}>
-                                    <NavLink className={({ isActive }) => isActive ? "text-yellow-500" : ""} to={link.to} > {link.name}</NavLink>
+                                    <NavLink
+                                        className={({ isActive }) => (isActive ? "text-yellow-500" : "")}
+                                        to={link.to}
+                                    >
+                                        {link.name}
+                                    </NavLink>
                                 </li>
                             ))}
                         </ul>
                     </div>
 
-                    {/* Logo + name */}
-                    <Link
-                        to="#"
-                        className="font-bold text-xl flex items-center gap-3"
-                    >
+                    {/* Logo */}
+                    <Link to="#" className="font-bold text-xl flex items-center gap-3">
                         <img src={logo} alt="Logo" className="h-8 w-auto" />
                         Job&nbsp;stock
                     </Link>
 
-                    {/* Nav links for desktop */}
+                    {/* Desktop nav */}
                     <div className="navbar-center hidden lg:flex">
                         <ul className="flex gap-6 relative">
                             {links.map((link, idx) => (
@@ -88,14 +120,22 @@ const Navber = () => {
                             ))}
                         </ul>
                     </div>
-                </div >
-
-                <div className="navbar-end space-x-2 ">
-                    <Link to={"/login"} className="flex items-center justify-center gap-2 hover:text-[#0b8260]"><FiLogIn /> Log In</Link>
-                    <Link to={"/signup"} className="bg-[#0b8260] hover:bg-[#3b6e6003] border border-[#ffffff00] hover:border-[#0b8260] hover:text-[#0b8260] p-10 py-4 rounded-sm text-white flex justify-center items-center gap-2 transition-all"><FaUserCheck /> Sign Up Now</Link>
                 </div>
-            </motion.div >
-        </div >
+
+                {/* Navbar End */}
+                <div className="flex items-center gap-2">
+                    <Link to={"/login"} className="flex items-center gap-2 hover:text-[#0b8260]">
+                        <FiLogIn /> Log In
+                    </Link>
+                    <Link
+                        to={"/signup"}
+                        className="bg-[#0b8260] hover:bg-[#3b6e6003] border border-[#ffffff00] hover:border-[#0b8260] hover:text-[#0b8260] p-4 rounded-sm text-white flex items-center gap-2 transition-all"
+                    >
+                        <FaUserCheck /> Sign Up Now
+                    </Link>
+                </div>
+            </div>
+        </motion.div>
     );
 };
 
