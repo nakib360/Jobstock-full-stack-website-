@@ -31,6 +31,7 @@ const Navber = () => {
 
     const links = [
         { name: "Home", to: "/" },
+        { name: "All Jobs", to: "/allJobs" },
         { name: "Dashboard", to: "/dashboard" },
         { name: "Applied Jobs", to: "/appliedJobs" },
         { name: "Blog", to: "/blog" },
@@ -100,17 +101,17 @@ const Navber = () => {
                                         {({ isActive }) => (
                                             <>
                                                 <span
-                                                    className={`text-gray-700 hover:text-[#0b8260] font-medium`}
+                                                    className={`${isActive ? "text-[#0b8260]" : "text-gray-700"} hover:text-[#0b8260] font-medium`}
                                                 >
                                                     {link.name}
                                                 </span>
 
                                                 {isActive && (
                                                     <motion.div
-                                                        layoutId="underline" // shared layout for smooth transition
+                                                        layoutId="underline"
                                                         className="absolute left-0 bottom-0 h-0.5 bg-[#0b8260]"
                                                         style={{ width: "100%" }}
-                                                        transition={{ duration: 2, type: "spring", stiffness: 500, damping: 30 }}
+                                                        transition={{ duration: 0.3, type: "tween", ease: "easeInOut" }}
                                                     />
                                                 )}
                                             </>

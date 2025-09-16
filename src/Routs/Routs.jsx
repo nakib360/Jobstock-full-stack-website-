@@ -3,6 +3,8 @@ import MainLayout from "../Layouts/MainLayout";
 import HomePage from "../Pages/HomePage";
 import SignupPage from "../Pages/SignupPage";
 import LoginPage from "../Pages/LoginPage";
+import DashboardPage from "../Pages/DashboardPage";
+import AllJobs from "../Pages/AllJobs";
 
 const rout = createBrowserRouter([
     {
@@ -14,6 +16,10 @@ const rout = createBrowserRouter([
                 element: <HomePage/>
             },
             {
+                path: "/allJobs",
+                element: <AllJobs/>
+            },
+            {
                 path: "/appliedJobs",
                 element: <div>Applied Jobs</div>
             },
@@ -23,7 +29,7 @@ const rout = createBrowserRouter([
             },
             {
                 path: "/dashboard",
-                element: <div>Dashboard</div>
+                element: <DashboardPage/>
             },
             {
                 path: "/login",

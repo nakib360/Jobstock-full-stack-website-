@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     FaFacebookF,
     FaLinkedinIn,
@@ -6,8 +6,36 @@ import {
     FaDribbble,
     FaArrowUp
 } from 'react-icons/fa';
+import logo from "../../public/jobsStockIcon.png";
+import { GrAndroid } from "react-icons/gr";
+import { IoIosAppstore } from "react-icons/io";
 
 const Footer = () => {
+    const [showButton, setShowButton] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 100) {
+                setShowButton(true);
+            } else {
+                setShowButton(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        }
+    }, [showButton]);
+
+    const handleGoToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+
     return (
         <footer className="bg-white text-gray-700 border-t border-gray-200 pt-10 pb-5">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -15,15 +43,12 @@ const Footer = () => {
                     {/* Logo and Address */}
                     <div className="space-y-4">
                         <div className="flex items-center space-x-2">
-                            <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold">
-                                {/* Logo Placeholder */}
-                                <span>JS</span>
-                            </div>
+                            <img className='w-20' src={logo} alt="" />
                             <span className="text-xl font-bold">JOB STOCK</span>
                         </div>
                         <div className="text-sm text-gray-600">
-                            <p>Collins Street West, Victoria Near Bank Road</p>
-                            <p>Australia QHR12456.</p>
+                            <p>Halishahar, Chattogram, Bangladesh</p>
+                            <p>Halishahar, 4226</p>
                         </div>
                         <div className="flex space-x-3 pt-2">
                             <FaFacebookF className="cursor-pointer hover:text-green-600" />
@@ -69,14 +94,14 @@ const Footer = () => {
                     <div className="space-y-4">
                         <h3 className="font-semibold text-green-700">Download Apps</h3>
                         <div className="border rounded-lg px-4 py-3 flex items-center space-x-3">
-                            <i className="text-2xl text-gray-600 fab fa-apple"></i>
+                            <GrAndroid className='text-2xl' />
                             <div>
                                 <p className="text-xs">GET IT ON</p>
                                 <p className="text-sm font-semibold">Google Play</p>
                             </div>
                         </div>
                         <div className="border rounded-lg px-4 py-3 flex items-center space-x-3">
-                            <i className="text-2xl text-gray-600 fab fa-android"></i>
+                            <IoIosAppstore className='text-2xl' />
                             <div>
                                 <p className="text-xs">GET IT ON</p>
                                 <p className="text-sm font-semibold">App Store</p>
@@ -87,7 +112,7 @@ const Footer = () => {
 
                 {/* Stats */}
                 <div className="mt-10 border-t pt-5 flex flex-wrap justify-between text-sm text-gray-600">
-                    <div>© 2025 JobStock Design & Develop By ❤️ Shreethemes.</div>
+                    <div>© 2025 JobStock Design & Develop By Nakib360.</div>
                     <div className="flex space-x-6 mt-2 md:mt-0">
                         <p><span className="font-bold text-gray-800">12K</span> Job Posted</p>
                         <p><span className="font-bold text-gray-800">10M</span> Happy Customers</p>
@@ -98,9 +123,13 @@ const Footer = () => {
             </div>
 
             <div className="fixed bottom-5 right-5 z-50">
-                <button className="bg-green-600 text-white p-3 rounded-full shadow hover:bg-green-700">
-                    <FaArrowUp />
-                </button>
+                {
+                    showButton && (
+                        <button onClick={handleGoToTop} className="bg-green-600 text-white p-3 rounded-full shadow hover:bg-green-700">
+                            <FaArrowUp />
+                        </button>
+                    )
+                }
             </div>
         </footer>
     );
