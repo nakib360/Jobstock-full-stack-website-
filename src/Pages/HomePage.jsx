@@ -12,7 +12,7 @@ const HomePage = () => {
       <div className="z-30 mt-20">
         <Header />
         <Ad />
-        <HotJobs/>
+        <HotJobs limit={3}/>
         <Spetialities/>
         <Services/>
         <Need/>

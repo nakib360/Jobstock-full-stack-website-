@@ -6,12 +6,13 @@ const JobCard = ({ job }) => {
                 <img className="w-20 mt-10" src={job?.jobImage} alt="" />
                 <p className="text-sm text-gray-500">{job?.company}</p>
                 <p className="font-semibold">{job?.jobName}</p>
-                <p className="flex items-center flex-wrap text-center gap-2 justify-center">
+                <div className="flex items-center flex-wrap text-center gap-2 justify-center">
                     {
-                        job?.requirements?.skills.map(tools => (
-                            <div className="text-sm text-gray-500 bg-gray-400/20 p-2 py-1 rounded-sm">{tools}</div>
+                        job?.requirements?.skills.map((tools, idx) => (
+                            <div key={idx} className="text-sm text-gray-500 bg-gray-400/20 p-2 py-1 rounded-sm">{tools}</div>
                         ))
-                    }</p>
+                    }
+                </div>
             </div>
             <div className="flex justify-between items-center mt-4">
                 <div className="flex gap-1 font-semibold text-sm">
