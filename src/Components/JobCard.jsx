@@ -1,6 +1,6 @@
 const JobCard = ({ job }) => {
     return (
-        <div className=" relative bg-white rounded-xl  p-5 max-w-100 border border-black space-y-2 ">
+        <div className=" relative bg-white rounded-xl  p-5 border border-black space-y-2 ">
             <div className="flex flex-col items-center gap-2">
                 <div className="absolute right-5 text-sm text-[#00684b] bg-[#0b82605e] p-2 py-1 rounded-sm">{job?.jobType}</div>
                 <img className="w-20 mt-10" src={job?.jobImage} alt="" />

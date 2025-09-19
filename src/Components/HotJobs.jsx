@@ -14,6 +14,10 @@ const HotJobs = ({ limit }) => {
     const [loading, setLoading] = useState(true);
     const [innerText, setInnerText] = useState(false);
     const location = useLocation();
+    const sortingOptions = [
+        { option: "Ascending of Salary", value: "ascending" },
+        { option: "Descending of Salary", value: "descending" }
+    ]
 
     useEffect(() => {
         axios.get("http://localhost:3000/jobs")
@@ -31,13 +35,13 @@ const HotJobs = ({ limit }) => {
                 return Math.random() - 0.5
             }).slice(0, limit)
         }
-        
+
         if (searchQuery && searchQuery.length > 0) {
             filtered = data.filter(job => {
                 return job.jobName.toLowerCase().includes(searchQuery.toLowerCase())
             })
-        } 
-        
+        }
+
         if (sortOrder && sortOrder.length > 0) {
             filtered = [...data].sort((a, b) => {
                 if (sortOrder === "ascending") {
@@ -83,8 +87,11 @@ const HotJobs = ({ limit }) => {
                                     className=" text-black border border-white/30 bg-white focus:border-white/30 p-3 rounded-xl outline-none shadow-sm transition transition-all font-bold"
                                 >
                                     <option className="roboto font-semibold" value="" disabled>Sort by</option>
-                                    <option className="roboto font-semibold" value="ascending">Ascending of Salary</option>
-                                    <option className="roboto font-semibold" value="descending">Descending of Salary</option>
+                                    {
+                                        sortingOptions.map((opt, idx) => (
+                                            <option key={idx} className="roboto font-semibold" value={opt.value}>{opt.option}</option>
+                                        ))
+                                    }
                                 </select>
                                 {
                                     sortOrder.length > 0 && (

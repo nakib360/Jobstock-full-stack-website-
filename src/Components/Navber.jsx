@@ -6,7 +6,7 @@ import { FiLogIn } from "react-icons/fi";
 import { useState, useEffect } from "react";
 
 const Navber = () => {
-    const [show, setShow] = useState(true); // navbar visible by default
+    const [show, setShow] = useState(true); 
     const [lastScrollY, setLastScrollY] = useState(0);
 
     useEffect(() => {
