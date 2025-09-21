@@ -2,20 +2,57 @@ import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { motion } from "framer-motion";
 import { Toaster, toast } from "react-hot-toast";
+import { ImCross } from "react-icons/im";
+import { useEffect, useState } from "react";
+import { MdOutlineDone } from "react-icons/md";
 
 const SignupPage = () => {
-  
+  const [uppercase, setUppercase] = useState(false);
+  const [lowercase, setLowercase] = useState(false);
+  const [specialChar, setSpecialChar] = useState(false);
+  const [numberInclude, setNumberInclude] = useState(false);
+  const [charMin, setCharMin] = useState();
+  const [passValue, setPassValue] = useState("");
+  const [verified, setVerified] = useState(false);
+
+  useEffect(() => {
+    if (uppercase && lowercase && specialChar && numberInclude && charMin) {
+      setVerified(true);
+    }
+  }, [uppercase, lowercase, specialChar, numberInclude, charMin]);
+
+  useEffect(() => {
+    if (passValue) {
+      setUppercase(/[A-Z]/.test(passValue));
+      setLowercase(/[a-z]/.test(passValue));
+      setNumberInclude(/[0-9]/.test(passValue));
+      setSpecialChar(/[^A-Za-z0-9]/.test(passValue));
+      setCharMin(passValue.length >= 6);
+    } else {
+      setUppercase(false);
+      setLowercase(false);
+      setNumberInclude(false);
+      setSpecialChar(false);
+      setCharMin(false);
+    }
+  }, [passValue]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const values = Object.fromEntries(formData.entries());
 
-    if(values.password !== values.confirmPassword){
-      return toast.error("Password do not matching. Please Confirm Password.")
+    if (values.password !== values.confirmPassword) {
+      return toast.error("Password do not matching with confirm password.")
+    }
+
+    if (verified === false) {
+      return toast.error("Please complete our password recommendation.")
     }
 
     console.log(values);
   };
+  
 
   // Animation variants
   const containerVariants = {
@@ -86,6 +123,16 @@ const SignupPage = () => {
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                 </select>
+              ) : field.name === "password" ? (
+                <input
+                  name={field.name}
+                  type={field.type}
+                  onChange={e => setPassValue(e.target.value)}
+                  autoComplete="off"
+                  placeholder={`Enter your ${field.label.toLowerCase()}`}
+                  className="px-5 py-3 rounded-xl border border-white/30 bg-white/90 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 shadow-md"
+                  required={field.name !== "phone"}
+                />
               ) : (
                 <input
                   name={field.name}
@@ -98,9 +145,80 @@ const SignupPage = () => {
             </motion.div>
           ))}
 
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            className="px-2 text-sm space-y-1">
+            <p className="flex items-center gap-1">
+              {uppercase ? (
+                <MdOutlineDone className="text-green-500 font-bold" />
+              ) : (
+                <ImCross className="text-red-500" />
+              )}
+              {uppercase ? (
+                <span className="text-white">Minimum one uppercase</span>
+              ) : (
+                <del className="text-gray-400">Minimum one uppercase</del>
+              )}
+            </p>
+
+            <p className="flex items-center gap-1">
+              {lowercase ? (
+                <MdOutlineDone className="text-green-500 font-bold" />
+              ) : (
+                <ImCross className="text-red-500" />
+              )}
+              {lowercase ? (
+                <span className="text-white">Minimum one lowercase</span>
+              ) : (
+                <del className="text-gray-400">Minimum one lowercase</del>
+              )}
+            </p>
+
+            <p className="flex items-center gap-1">
+              {numberInclude ? (
+                <MdOutlineDone className="text-green-500 font-bold" />
+              ) : (
+                <ImCross className="text-red-500" />
+              )}
+              {numberInclude ? (
+                <span className="text-white">Minimum one number</span>
+              ) : (
+                <del className="text-gray-400">Minimum one number</del>
+              )}
+            </p>
+
+            <p className="flex items-center gap-1">
+              {specialChar ? (
+                <MdOutlineDone className="text-green-500 font-bold" />
+              ) : (
+                <ImCross className="text-red-500" />
+              )}
+              {specialChar ? (
+                <span className="text-white">Minimum one special character</span>
+              ) : (
+                <del className="text-gray-400">Minimum one special character</del>
+              )}
+            </p>
+
+            <p className="flex items-center gap-1">
+              {charMin ? (
+                <MdOutlineDone className="text-green-500 font-bold" />
+              ) : (
+                <ImCross className="text-red-500" />
+              )}
+              {charMin ? (
+                <span className="text-white">At least 6 characters</span>
+              ) : (
+                <del className="text-gray-400">At least 6 characters</del>
+              )}
+            </p>
+          </motion.div>
+
+
           {/* Submit Button */}
           <motion.div
-            className="col-span-2 flex justify-center mt-6"
+            className="col-span-2 flex justify-center mt-2"
             variants={itemVariants}
             custom={9}
             initial="hidden"
@@ -160,7 +278,7 @@ const SignupPage = () => {
       </motion.div>
 
       <div>
-        <Toaster/>
+        <Toaster />
       </div>
     </div>
   );
