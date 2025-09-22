@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { MdOutlineDone } from "react-icons/md";
 import { BiShowAlt, BiHide } from "react-icons/bi";
 import AuthContext from "../Authantiation/AuthContext";
+import { useNavigate } from "react-router";
 
 
 const SignupPage = () => {
@@ -20,7 +21,8 @@ const SignupPage = () => {
   const [passShow, setPassShow] = useState(!true);
   const [confirmPassShow, setConfirmPassShow] = useState(!true);
 
-  const { signInWithGoogle, setLoading, setUser } = useContext(AuthContext);
+  const { signInWithGoogle } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (uppercase && lowercase && specialChar && numberInclude && charMin) {
@@ -81,9 +83,12 @@ const SignupPage = () => {
 
   const handleSignInWithGoogle = () => {
     signInWithGoogle()
-      .then((res) => {
-        setUser(res?.user);
-        setLoading(false);
+      .then(() => {
+        navigate("/");
+        window.scrollTo(0, 0);
+      })
+      .catch(() => {
+        toast.error("Please try again!");
       })
   }
 
@@ -296,8 +301,8 @@ const SignupPage = () => {
           className="flex justify-center gap-5"
         >
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.99 }}
             type="button"
             onClick={() => handleSignInWithGoogle()}
             className="flex items-center justify-center gap-3 w-full md:w-1/2 bg-white text-gray-700 font-medium px-6 py-3 rounded-xl shadow-md hover:bg-gray-100 transition-all"
@@ -307,8 +312,8 @@ const SignupPage = () => {
           </motion.button>
 
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.99 }}
             type="button"
             className="flex items-center justify-center gap-3 w-full md:w-1/2 bg-white text-gray-700 font-medium px-6 py-3 rounded-xl shadow-md hover:bg-gray-100 transition-all"
           >

@@ -22,7 +22,7 @@ const AuthProvider = ({ children }) => {
     }
 
     const signOutUser = () => {
-        return signOut();
+        return signOut(auth);
     }
 
     useEffect(() => {

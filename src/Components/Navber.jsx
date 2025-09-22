@@ -2,12 +2,17 @@ import * as motion from "motion/react-client";
 import logo from "../../public/jobsStockIcon.png";
 import { Link, NavLink } from "react-router";
 import { FaUserCheck } from "react-icons/fa";
-import { FiLogIn } from "react-icons/fi";
-import { useState, useEffect } from "react";
+import { FiLogIn, FiLogOut } from "react-icons/fi";
+import { useState, useEffect, useContext } from "react";
+import AuthContext from "../Authantiation/AuthContext";
+import 'react-tooltip/dist/react-tooltip.css'
+import { Tooltip } from 'react-tooltip'
 
 const Navber = () => {
-    const [show, setShow] = useState(true); 
+    const [show, setShow] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
+    const { user, signOutUser } = useContext(AuthContext);
+    console.log(user?.photoURL)
 
     useEffect(() => {
         const handleScroll = () => {
@@ -36,6 +41,10 @@ const Navber = () => {
         { name: "Applied Jobs", to: "/appliedJobs" },
         { name: "Blog", to: "/blog" },
     ];
+
+    const handleLogOut = () => {
+        signOutUser()
+    }
 
     return (
         <motion.div
@@ -124,18 +133,34 @@ const Navber = () => {
                 </div>
 
                 {/* Navbar End */}
-                <div className="flex items-center gap-2">
-                    <Link to={"/login"} className="flex items-center gap-2 hover:text-[#0b8260]">
-                        <FiLogIn /> Log In
-                    </Link>
-                    <Link
-                        to={"/signup"}
-                        className="bg-[#0b8260] hover:bg-[#3b6e6003] border border-[#ffffff00] hover:border-[#0b8260] hover:text-[#0b8260] p-4 rounded-sm text-white flex items-center gap-2 transition-all"
-                    >
-                        <FaUserCheck /> Sign Up Now
-                    </Link>
-                </div>
+                {
+                    user ? (
+                        <div className="flex items-center gap-2">
+                            <a data-tooltip-id="logOut" data-tooltip-content={"Log out"}>
+                                <Link onClick={() => handleLogOut()} to={"/signup"} className="flex items-center gap-2 hover:text-[#0b8260]">
+                                    <FiLogOut />
+                                </Link>
+                            </a>
+                            <div className="border-2 rounded-full border-[#0b8260] p-0.5">
+                                <img className=" w-8 h-8 rounded-full" src={user?.photoURL} alt={user?.displayName} />
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="flex items-center gap-2">
+                            <Link to={"/login"} className="flex items-center gap-2 hover:text-[#0b8260]">
+                                <FiLogIn /> Log In
+                            </Link>
+                            <Link
+                                to={"/signup"}
+                                className="bg-[#0b8260] hover:bg-[#3b6e6003] border border-[#ffffff00] hover:border-[#0b8260] hover:text-[#0b8260] p-4 rounded-sm text-white flex items-center gap-2 transition-all"
+                            >
+                                <FaUserCheck /> Sign Up Now
+                            </Link>
+                        </div>
+                    )
+                }
             </div>
+            <Tooltip id="logOut"/>
         </motion.div>
     );
 };
