@@ -3,8 +3,11 @@ import { FcGoogle } from "react-icons/fc";
 import { motion } from "framer-motion";
 import { Toaster, toast } from "react-hot-toast";
 import { ImCross } from "react-icons/im";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MdOutlineDone } from "react-icons/md";
+import { BiShowAlt, BiHide } from "react-icons/bi";
+import AuthContext from "../Authantiation/AuthContext";
+
 
 const SignupPage = () => {
   const [uppercase, setUppercase] = useState(false);
@@ -14,6 +17,10 @@ const SignupPage = () => {
   const [charMin, setCharMin] = useState();
   const [passValue, setPassValue] = useState("");
   const [verified, setVerified] = useState(false);
+  const [passShow, setPassShow] = useState(!true);
+  const [confirmPassShow, setConfirmPassShow] = useState(!true);
+
+  const { signInWithGoogle, setLoading, setUser } = useContext(AuthContext);
 
   useEffect(() => {
     if (uppercase && lowercase && specialChar && numberInclude && charMin) {
@@ -52,9 +59,8 @@ const SignupPage = () => {
 
     console.log(values);
   };
-  
 
-  // Animation variants
+
   const containerVariants = {
     hidden: { opacity: 0, scale: 0.9 },
     visible: {
@@ -72,6 +78,14 @@ const SignupPage = () => {
       transition: { delay: i * 0.1, duration: 0.4 },
     }),
   };
+
+  const handleSignInWithGoogle = () => {
+    signInWithGoogle()
+      .then((res) => {
+        setUser(res?.user);
+        setLoading(false);
+      })
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen mt-24 ">
@@ -124,15 +138,41 @@ const SignupPage = () => {
                   <option value="female">Female</option>
                 </select>
               ) : field.name === "password" ? (
-                <input
-                  name={field.name}
-                  type={field.type}
-                  onChange={e => setPassValue(e.target.value)}
-                  autoComplete="off"
-                  placeholder={`Enter your ${field.label.toLowerCase()}`}
-                  className="px-5 py-3 rounded-xl border border-white/30 bg-white/90 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 shadow-md"
-                  required={field.name !== "phone"}
-                />
+                <div className="relative w-full">
+                  <input
+                    name={field.name}
+                    type={passShow ? "text" : "password"}
+                    onChange={e => setPassValue(e.target.value)}
+                    autoComplete="off"
+                    placeholder={`Enter your ${field.label.toLowerCase()}`}
+                    className="px-5 py-3 rounded-xl border border-white/30 bg-white/90 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 shadow-md w-full pr-12"
+                    required={field.name !== "phone"}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setPassShow(!passShow)}
+                    className="absolute inset-y-0 right-3 flex items-center text-gray-600"
+                  >
+                    {passShow ? <BiShowAlt className="text-2xl" /> : <BiHide className="text-2xl" />}
+                  </button>
+                </div>
+              ) : field.name === "confirmPassword" ? (
+                <div className="relative w-full">
+                  <input
+                    name={field.name}
+                    type={confirmPassShow ? "text" : "password"}
+                    autoComplete="off"
+                    placeholder={`Enter your ${field.label.toLowerCase()}`}
+                    className="px-5 py-3 rounded-xl border border-white/30 bg-white/90 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 shadow-md w-full pr-12"
+                    required={field.name !== "phone"}
+                  />
+                  <button
+                    onClick={() => setConfirmPassShow(!confirmPassShow)}
+                    className="absolute inset-y-0 right-3 flex items-center text-gray-600"
+                  >
+                    {confirmPassShow ? <BiShowAlt className="text-2xl" /> : <BiHide className="text-2xl" />}
+                  </button>
+                </div>
               ) : (
                 <input
                   name={field.name}
@@ -259,6 +299,7 @@ const SignupPage = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             type="button"
+            onClick={() => handleSignInWithGoogle()}
             className="flex items-center justify-center gap-3 w-full md:w-1/2 bg-white text-gray-700 font-medium px-6 py-3 rounded-xl shadow-md hover:bg-gray-100 transition-all"
           >
             <FcGoogle className="text-2xl" />
