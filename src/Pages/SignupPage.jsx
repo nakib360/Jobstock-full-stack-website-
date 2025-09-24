@@ -2,12 +2,13 @@ import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { motion } from "framer-motion";
 import { Toaster, toast } from "react-hot-toast";
-import { ImCross } from "react-icons/im";
 import { useContext, useEffect, useState } from "react";
+import { RxCross2 } from "react-icons/rx";
 import { MdOutlineDone } from "react-icons/md";
 import { BiShowAlt, BiHide } from "react-icons/bi";
 import AuthContext from "../Authantiation/AuthContext";
 import { useNavigate } from "react-router";
+import axios from "axios";
 
 
 const SignupPage = () => {
@@ -21,7 +22,7 @@ const SignupPage = () => {
   const [passShow, setPassShow] = useState(!true);
   const [confirmPassShow, setConfirmPassShow] = useState(!true);
 
-  const { signInWithGoogle } = useContext(AuthContext);
+  const { signInWithGoogle, signUpUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,7 +60,57 @@ const SignupPage = () => {
       return toast.error("Please complete our password recommendation.")
     }
 
-    console.log(values);
+    signUpUser(values?.email, values?.password)
+      .then((result) => {
+        console.log(result);
+        axios.post("http://localhost:3000/users", {
+          displayName: values?.firstName && values?.lastName ? values?.firstName + " " + values?.lastName : "New User",
+          email: values?.email ?? null,
+          phoneNumber: values?.phone ?? null,
+          gender: values?.gender ?? null,
+          password: values?.password ?? null,
+          birthDate: values?.date ?? null,
+          bio: "",
+          avatar: "",
+          social: {
+            website: "",
+            linkedin: "",
+            twitter: "",
+            facebook: ""
+          },
+          privacy: {
+            profilePublic: true,
+            showEmail: false,
+            showPhone: false
+          },
+          skills: [],
+          education: [],
+          createdAt: new Date().toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+          }),
+          updatedAt: new Date().toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+          }),
+        })
+          .then(res => {
+            console.log("User created:", res.data);
+          })
+          .catch(err => {
+            console.error("Error creating user:", err);
+          })
+      }).catch((err) => {
+        toast.error(err)
+      });
   };
 
 
@@ -83,9 +134,21 @@ const SignupPage = () => {
 
   const handleSignInWithGoogle = () => {
     signInWithGoogle()
-      .then(() => {
+      .then((res) => {
+        const user = res?.user;
         navigate("/");
         window.scrollTo(0, 0);
+        axios.post("http://localhost:3000/users", {
+          displayName: user?.displayName ?? null,
+          email: user?.email ?? null,
+          phoneNumber: user?.phone ?? null,
+          gender: user?.gender ?? null,
+          password: user?.password ?? null,
+          date: user?.date ?? null
+        })
+          .then((res) => {
+            console.log(res);
+          })
       })
       .catch(() => {
         toast.error("Please try again!");
@@ -131,7 +194,7 @@ const SignupPage = () => {
               animate="visible"
               className="flex flex-col gap-2"
             >
-              <label className="text-sm text-white font-medium">{field.label}</label>
+              <label className="text-sm text-white font-medium">{field.label}<span className="text-xl text-red-500">*</span></label>
               {field.type === "select" ? (
                 <select
                   name={field.name}
@@ -156,7 +219,7 @@ const SignupPage = () => {
                   <button
                     type="button"
                     onClick={() => setPassShow(!passShow)}
-                    className="absolute inset-y-0 right-3 flex items-center text-gray-600"
+                    className="absolute inset-y-0 right-3 flex items-center text-black"
                   >
                     {passShow ? <BiShowAlt className="text-2xl" /> : <BiHide className="text-2xl" />}
                   </button>
@@ -173,7 +236,7 @@ const SignupPage = () => {
                   />
                   <button
                     onClick={() => setConfirmPassShow(!confirmPassShow)}
-                    className="absolute inset-y-0 right-3 flex items-center text-gray-600"
+                    className="absolute inset-y-0 right-3 flex items-center text-black"
                   >
                     {confirmPassShow ? <BiShowAlt className="text-2xl" /> : <BiHide className="text-2xl" />}
                   </button>
@@ -198,7 +261,7 @@ const SignupPage = () => {
               {uppercase ? (
                 <MdOutlineDone className="text-green-500 font-bold" />
               ) : (
-                <ImCross className="text-red-500" />
+                <RxCross2 className="text-red-500" />
               )}
               {uppercase ? (
                 <span className="text-white">Minimum one uppercase</span>
@@ -211,7 +274,7 @@ const SignupPage = () => {
               {lowercase ? (
                 <MdOutlineDone className="text-green-500 font-bold" />
               ) : (
-                <ImCross className="text-red-500" />
+                <RxCross2 className="text-red-500" />
               )}
               {lowercase ? (
                 <span className="text-white">Minimum one lowercase</span>
@@ -224,7 +287,7 @@ const SignupPage = () => {
               {numberInclude ? (
                 <MdOutlineDone className="text-green-500 font-bold" />
               ) : (
-                <ImCross className="text-red-500" />
+                <RxCross2 className="text-red-500" />
               )}
               {numberInclude ? (
                 <span className="text-white">Minimum one number</span>
@@ -237,7 +300,7 @@ const SignupPage = () => {
               {specialChar ? (
                 <MdOutlineDone className="text-green-500 font-bold" />
               ) : (
-                <ImCross className="text-red-500" />
+                <RxCross2 className="text-red-500" />
               )}
               {specialChar ? (
                 <span className="text-white">Minimum one special character</span>
@@ -250,7 +313,7 @@ const SignupPage = () => {
               {charMin ? (
                 <MdOutlineDone className="text-green-500 font-bold" />
               ) : (
-                <ImCross className="text-red-500" />
+                <RxCross2 className="text-red-500" />
               )}
               {charMin ? (
                 <span className="text-white">At least 6 characters</span>

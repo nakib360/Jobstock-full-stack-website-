@@ -2,7 +2,6 @@ import { Outlet } from "react-router";
 import "../index.css";
 import Navber from "../Components/Navber";
 import { Helmet } from "react-helmet";
-import logo from "../../public/favicon.ico";
 import "../index.css";
 import Footer from "../Components/Footer";
 
@@ -12,7 +11,7 @@ const MainLayout = () => {
       <Helmet>
         <title>JOB STOCK - Find Your Dream Job</title>
         <meta name="description" content="Best job search platform for your career." />
-        <link rel="icon" type="image/png" href={logo} />
+        <link rel="icon" type="image/png" href="/favicon.ico" />
       </Helmet>
 
       <Navber />

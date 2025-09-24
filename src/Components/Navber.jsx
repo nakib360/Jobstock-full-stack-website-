@@ -2,7 +2,7 @@ import * as motion from "motion/react-client";
 import logo from "../../public/jobsStockIcon.png";
 import { Link, NavLink } from "react-router";
 import { FaUserCheck } from "react-icons/fa";
-import { FiLogIn, FiLogOut } from "react-icons/fi";
+import { FiLogIn, FiLogOut, FiUser } from "react-icons/fi";
 import { useState, useEffect, useContext } from "react";
 import AuthContext from "../Authantiation/AuthContext";
 import 'react-tooltip/dist/react-tooltip.css'
@@ -12,7 +12,6 @@ const Navber = () => {
     const [show, setShow] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
     const { user, signOutUser } = useContext(AuthContext);
-    console.log(user?.photoURL)
 
     useEffect(() => {
         const handleScroll = () => {
@@ -142,7 +141,13 @@ const Navber = () => {
                                 </Link>
                             </a>
                             <div className="border-2 rounded-full border-[#0b8260] p-0.5">
-                                <img className=" w-8 h-8 rounded-full" src={user?.photoURL} alt={user?.displayName} />
+                                {
+                                    user?.photoURL ? (
+                                        <img className=" w-8 h-8 rounded-full" src={user?.photoURL} alt={user?.displayName} />
+                                    ) : (
+                                        <FiUser className="w-6 h-6 m-0.5"/>
+                                    )
+                                }
                             </div>
                         </div>
                     ) : (

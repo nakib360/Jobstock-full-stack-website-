@@ -6,7 +6,6 @@ import {
     FaDribbble,
     FaArrowUp
 } from 'react-icons/fa';
-import logo from "../../public/jobsStockIcon.png";
 import { GrAndroid } from "react-icons/gr";
 import { IoIosAppstore } from "react-icons/io";
 
@@ -43,7 +42,7 @@ const Footer = () => {
                     {/* Logo and Address */}
                     <div className="space-y-4">
                         <div className="flex items-center space-x-2">
-                            <img className='w-20' src={logo} alt="" />
+                            <img className='w-20' src="/jobsStockIcon.png" alt="" />
                             <span className="text-xl font-bold">JOB STOCK</span>
                         </div>
                         <div className="text-sm text-gray-600">
