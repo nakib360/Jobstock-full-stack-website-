@@ -5,19 +5,21 @@ import SignupPage from "../Pages/SignupPage";
 import LoginPage from "../Pages/LoginPage";
 import DashboardPage from "../Pages/DashboardPage";
 import AllJobs from "../Pages/AllJobs";
+import AdminPanel from "../Pages/AdminPanel";
+import AdminSecureRour from "./AdminSecureRour";
 
 const rout = createBrowserRouter([
     {
         path: "/",
-        element: <MainLayout/>,
+        element: <MainLayout />,
         children: [
             {
                 path: "/",
-                element: <HomePage/>
+                element: <HomePage />
             },
             {
                 path: "/allJobs",
-                element: <AllJobs/>
+                element: <AllJobs />
             },
             {
                 path: "/appliedJobs",
@@ -29,15 +31,23 @@ const rout = createBrowserRouter([
             },
             {
                 path: "/dashboard",
-                element: <DashboardPage/>
+                element: <DashboardPage />
             },
             {
                 path: "/login",
-                element: <LoginPage/>
+                element: <LoginPage />
             },
             {
                 path: "/signup",
-                element: <SignupPage/>
+                element: <SignupPage />
+            },
+            {
+                path: "/admin-panel",
+                element: (
+                    <AdminSecureRour>
+                        <AdminPanel />
+                    </AdminSecureRour>
+                )
             }
         ]
     },

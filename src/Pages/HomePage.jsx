@@ -9,7 +9,7 @@ import Spetialities from "../Components/Spetialities";
 const HomePage = () => {
   return (
     <div>
-      <div className="z-30 mt-20">
+      <div className="z-30">
         <Header />
         <Ad />
         <HotJobs limit={3}/>

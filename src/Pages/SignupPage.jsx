@@ -7,7 +7,7 @@ import { RxCross2 } from "react-icons/rx";
 import { MdOutlineDone } from "react-icons/md";
 import { BiShowAlt, BiHide } from "react-icons/bi";
 import AuthContext from "../Authantiation/AuthContext";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import axios from "axios";
 
 
@@ -104,6 +104,8 @@ const SignupPage = () => {
         })
           .then(res => {
             console.log("User created:", res.data);
+            navigate("/");
+            window.scrollTo(0, 0);
           })
           .catch(err => {
             console.error("Error creating user:", err);
@@ -139,12 +141,43 @@ const SignupPage = () => {
         navigate("/");
         window.scrollTo(0, 0);
         axios.post("http://localhost:3000/users", {
-          displayName: user?.displayName ?? null,
+          displayName: user?.firstName && user?.lastName ? user?.firstName + " " + user?.lastName : "New User",
           email: user?.email ?? null,
           phoneNumber: user?.phone ?? null,
           gender: user?.gender ?? null,
           password: user?.password ?? null,
-          date: user?.date ?? null
+          birthDate: user?.date ?? null,
+          bio: "",
+          avatar: user?.photoURL ?? "",
+          social: {
+            website: "",
+            linkedin: "",
+            twitter: "",
+            facebook: ""
+          },
+          privacy: {
+            profilePublic: true,
+            showEmail: false,
+            showPhone: false
+          },
+          skills: [],
+          education: [],
+          createdAt: new Date().toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+          }),
+          updatedAt: new Date().toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+          }),
         })
           .then((res) => {
             console.log(res);
@@ -156,7 +189,7 @@ const SignupPage = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen mt-24 ">
+    <div className="flex justify-center items-center min-h-screen">
       {/* Card with animation */}
       <motion.div
         variants={containerVariants}

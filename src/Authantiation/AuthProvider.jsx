@@ -2,12 +2,25 @@ import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStat
 import app from "../Firebase/Firebase.init";
 import AuthContext from "./AuthContext";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const googleProvider = new GoogleAuthProvider();
     const auth = getAuth(app);
+    const [admin, setAdmin] = useState(false);
+
+    useEffect(() => {
+        axios.get(`http://localhost:3000/users?email=${user?.email}`)
+            .then((res) => {
+                if (res.data[0]?.admin === "true") {
+                    setAdmin(true);
+                } else {
+                    setAdmin(false);
+                }
+            })
+    }, [user?.email])
 
     const signUpUser = (email, password) => {
         return createUserWithEmailAndPassword(auth, email, password);
@@ -22,7 +35,10 @@ const AuthProvider = ({ children }) => {
     }
 
     const signOutUser = () => {
-        return signOut(auth);
+        return signOut(auth)
+            .then(() => {
+                setAdmin(false);
+            })
     }
 
     useEffect(() => {
@@ -39,6 +55,7 @@ const AuthProvider = ({ children }) => {
         user,
         loading,
         auth,
+        admin,
         signUpUser,
         LogInUser,
         signInWithGoogle,

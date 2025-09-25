@@ -5,31 +5,26 @@ import { FaUserCheck } from "react-icons/fa";
 import { FiLogIn, FiLogOut, FiUser } from "react-icons/fi";
 import { useState, useEffect, useContext } from "react";
 import AuthContext from "../Authantiation/AuthContext";
-import 'react-tooltip/dist/react-tooltip.css'
-import { Tooltip } from 'react-tooltip'
+import 'react-tooltip/dist/react-tooltip.css';
+import { Tooltip } from 'react-tooltip';
 
 const Navber = () => {
     const [show, setShow] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
-    const { user, signOutUser } = useContext(AuthContext);
+    const { user, signOutUser, admin } = useContext(AuthContext);
 
     useEffect(() => {
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
-
             if (currentScrollY > lastScrollY && currentScrollY > 50) {
-                // scroll down → hide
                 setShow(false);
             } else {
-                // scroll up → show
                 setShow(true);
             }
-
             setLastScrollY(currentScrollY);
         };
 
         window.addEventListener("scroll", handleScroll);
-
         return () => window.removeEventListener("scroll", handleScroll);
     }, [lastScrollY]);
 
@@ -39,10 +34,11 @@ const Navber = () => {
         { name: "Dashboard", to: "/dashboard" },
         { name: "Applied Jobs", to: "/appliedJobs" },
         { name: "Blog", to: "/blog" },
+        { name: "Admin Panel", to: "/admin-panel" }
     ];
 
     const handleLogOut = () => {
-        signOutUser()
+        signOutUser();
     }
 
     return (
@@ -81,16 +77,21 @@ const Navber = () => {
                             tabIndex={0}
                             className="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow z-10"
                         >
-                            {links.map((link, idx) => (
-                                <li className="hover:text-[#0b8260]" key={idx}>
-                                    <NavLink
-                                        className={({ isActive }) => (isActive ? "text-yellow-500" : "")}
-                                        to={link.to}
-                                    >
-                                        {link.name}
-                                    </NavLink>
-                                </li>
-                            ))}
+                            <li>
+                                {links.map((link, idx) => {
+                                    if (link.name === "Admin Panel" && !admin) return null;
+                                    return (
+                                        <li className="hover:text-[#0b8260]" key={idx}>
+                                            <NavLink
+                                                className={({ isActive }) => (isActive ? "text-yellow-500" : "")}
+                                                to={link.to}
+                                            >
+                                                {link.name}
+                                            </NavLink>
+                                        </li>
+                                    )
+                                })}
+                            </li>
                         </ul>
                     </div>
 
@@ -103,69 +104,68 @@ const Navber = () => {
                     {/* Desktop nav */}
                     <div className="navbar-center hidden lg:flex">
                         <ul className="flex gap-6 relative">
-                            {links.map((link, idx) => (
-                                <li key={idx} className="relative">
-                                    <NavLink to={link.to}>
-                                        {({ isActive }) => (
-                                            <>
-                                                <span
-                                                    className={`${isActive ? "text-[#0b8260]" : "text-gray-700"} hover:text-[#0b8260] font-medium`}
-                                                >
-                                                    {link.name}
-                                                </span>
+                            {links.map((link, idx) => {
+                                if (link.name === "Admin Panel" && !admin) return null;
+                                return (
+                                    <li key={idx} className="relative">
+                                        <NavLink to={link.to}>
+                                            {({ isActive }) => (
+                                                <>
+                                                    <span
+                                                        className={`${isActive ? "text-[#0b8260]" : "text-gray-700"} hover:text-[#0b8260] font-medium`}
+                                                    >
+                                                        {link.name}
+                                                    </span>
 
-                                                {isActive && (
-                                                    <motion.div
-                                                        layoutId="underline"
-                                                        className="absolute left-0 bottom-0 h-0.5 bg-[#0b8260]"
-                                                        style={{ width: "100%" }}
-                                                        transition={{ duration: 0.3, type: "tween", ease: "easeInOut" }}
-                                                    />
-                                                )}
-                                            </>
-                                        )}
-                                    </NavLink>
-                                </li>
-                            ))}
+                                                    {isActive && (
+                                                        <motion.div
+                                                            layoutId="underline"
+                                                            className="absolute left-0 bottom-0 h-0.5 bg-[#0b8260]"
+                                                            style={{ width: "100%" }}
+                                                            transition={{ duration: 0.3, type: "tween", ease: "easeInOut" }}
+                                                        />
+                                                    )}
+                                                </>
+                                            )}
+                                        </NavLink>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </div>
                 </div>
 
                 {/* Navbar End */}
-                {
-                    user ? (
-                        <div className="flex items-center gap-2">
-                            <a data-tooltip-id="logOut" data-tooltip-content={"Log out"}>
-                                <Link onClick={() => handleLogOut()} to={"/signup"} className="flex items-center gap-2 hover:text-[#0b8260]">
-                                    <FiLogOut />
-                                </Link>
-                            </a>
-                            <div className="border-2 rounded-full border-[#0b8260] p-0.5">
-                                {
-                                    user?.photoURL ? (
-                                        <img className=" w-8 h-8 rounded-full" src={user?.photoURL} alt={user?.displayName} />
-                                    ) : (
-                                        <FiUser className="w-6 h-6 m-0.5"/>
-                                    )
-                                }
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="flex items-center gap-2">
-                            <Link to={"/login"} className="flex items-center gap-2 hover:text-[#0b8260]">
-                                <FiLogIn /> Log In
+                {user ? (
+                    <div className="flex items-center gap-2">
+                        <a data-tooltip-id="logOut" data-tooltip-content={"Log out"}>
+                            <Link onClick={handleLogOut} to={"/signup"} className="flex items-center gap-2 hover:text-[#0b8260]">
+                                <FiLogOut />
                             </Link>
-                            <Link
-                                to={"/signup"}
-                                className="bg-[#0b8260] hover:bg-[#3b6e6003] border border-[#ffffff00] hover:border-[#0b8260] hover:text-[#0b8260] p-4 rounded-sm text-white flex items-center gap-2 transition-all"
-                            >
-                                <FaUserCheck /> Sign Up Now
-                            </Link>
+                        </a>
+                        <div className={`${admin ? "border-[#ffcc00]" : "border-[#0b8260]"} border-2 rounded-full p-0.5`}>
+                            {user?.photoURL ? (
+                                <img className="w-8 h-8 rounded-full" src={user?.photoURL} alt={user?.displayName} />
+                            ) : (
+                                <FiUser className="w-6 h-6 m-0.5" />
+                            )}
                         </div>
-                    )
-                }
+                    </div>
+                ) : (
+                    <div className="flex items-center gap-2">
+                        <Link to={"/login"} className="flex items-center gap-2 hover:text-[#0b8260]">
+                            <FiLogIn /> Log In
+                        </Link>
+                        <Link
+                            to={"/signup"}
+                            className="bg-[#0b8260] hover:bg-[#3b6e6003] border border-[#ffffff00] hover:border-[#0b8260] hover:text-[#0b8260] p-4 rounded-sm text-white flex items-center gap-2 transition-all"
+                        >
+                            <FaUserCheck /> Sign Up Now
+                        </Link>
+                    </div>
+                )}
             </div>
-            <Tooltip id="logOut"/>
+            <Tooltip id="logOut" />
         </motion.div>
     );
 };
