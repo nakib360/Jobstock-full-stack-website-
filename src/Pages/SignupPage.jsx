@@ -141,7 +141,7 @@ const SignupPage = () => {
         navigate("/");
         window.scrollTo(0, 0);
         axios.post("http://localhost:3000/users", {
-          displayName: user?.firstName && user?.lastName ? user?.firstName + " " + user?.lastName : "New User",
+          displayName: user?.displayName ?? "New User",
           email: user?.email ?? null,
           phoneNumber: user?.phone ?? null,
           gender: user?.gender ?? null,

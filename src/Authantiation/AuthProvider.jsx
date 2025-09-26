@@ -14,7 +14,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         axios.get(`http://localhost:3000/users?email=${user?.email}`)
             .then((res) => {
-                if (res.data[0]?.admin === "true") {
+                if (res.data[0]?.admin === true) {
                     setAdmin(true);
                 } else {
                     setAdmin(false);
@@ -23,18 +23,22 @@ const AuthProvider = ({ children }) => {
     }, [user?.email])
 
     const signUpUser = (email, password) => {
+        setLoading(false);
         return createUserWithEmailAndPassword(auth, email, password);
     }
 
     const LogInUser = (email, password) => {
+        setLoading(false);
         return signInWithEmailAndPassword(auth, email, password);
     }
 
     const signInWithGoogle = () => {
+        setLoading(false)
         return signInWithPopup(auth, googleProvider);
     }
 
     const signOutUser = () => {
+        setLoading(false);
         return signOut(auth)
             .then(() => {
                 setAdmin(false);

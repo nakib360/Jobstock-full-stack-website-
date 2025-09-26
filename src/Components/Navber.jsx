@@ -11,7 +11,17 @@ import { Tooltip } from 'react-tooltip';
 const Navber = () => {
     const [show, setShow] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
+    const [data, setData] = useState({});
     const { user, signOutUser, admin } = useContext(AuthContext);
+
+    useEffect(() => {
+        fetch(`http://localhost:3000/users?email=${user?.email}`)
+            .then(res => res.json())
+            .then(data => {
+                setData(data[0]);
+                console.log(data[0])
+            })
+    }, [user?.email])
 
     useEffect(() => {
         const handleScroll = () => {
@@ -144,11 +154,7 @@ const Navber = () => {
                             </Link>
                         </a>
                         <div className={`${admin ? "border-[#ffcc00]" : "border-[#0b8260]"} border-2 rounded-full p-0.5`}>
-                            {user?.photoURL ? (
-                                <img className="w-8 h-8 rounded-full" src={user?.photoURL} alt={user?.displayName} />
-                            ) : (
-                                <FiUser className="w-6 h-6 m-0.5" />
-                            )}
+                            <img className={`w-8 h-8 rounded-full`} src={data?.avatar && data?.avatar.length > 0 ? data?.avatar : "https://img.pikbest.com/png-images/20250228/user-profile-vector-flat-illustration-avatar-person-icon-gender-neutral-silhouette_11563975.png!sw800"} alt="" />
                         </div>
                     </div>
                 ) : (

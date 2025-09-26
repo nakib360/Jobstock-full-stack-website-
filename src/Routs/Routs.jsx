@@ -7,6 +7,7 @@ import DashboardPage from "../Pages/DashboardPage";
 import AllJobs from "../Pages/AllJobs";
 import AdminPanel from "../Pages/AdminPanel";
 import AdminSecureRour from "./AdminSecureRour";
+import SecureRout from "./SecureRout";
 
 const rout = createBrowserRouter([
     {
@@ -23,7 +24,11 @@ const rout = createBrowserRouter([
             },
             {
                 path: "/appliedJobs",
-                element: <div>Applied Jobs</div>
+                element: (
+                    <SecureRout>
+                        <div>Applied Jobs</div>
+                    </SecureRout>
+                )
             },
             {
                 path: "/blog",
@@ -31,7 +36,11 @@ const rout = createBrowserRouter([
             },
             {
                 path: "/dashboard",
-                element: <DashboardPage />
+                element: (
+                    <SecureRout>
+                        <DashboardPage />
+                    </SecureRout>
+                )
             },
             {
                 path: "/login",
