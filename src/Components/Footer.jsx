@@ -124,7 +124,7 @@ const Footer = () => {
             <div className="fixed bottom-5 right-5 z-50">
                 {
                     showButton && (
-                        <button onClick={handleGoToTop} className="bg-green-600 text-white p-3 rounded-full shadow hover:bg-green-700">
+                        <button onClick={handleGoToTop} className="cursor-pointer bg-green-600 text-white p-3 rounded-full shadow hover:bg-green-700">
                             <FaArrowUp />
                         </button>
                     )

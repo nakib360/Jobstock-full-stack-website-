@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import MainLayout from "../Layouts/MainLayout";
 import HomePage from "../Pages/HomePage";
 import SignupPage from "../Pages/SignupPage";
@@ -8,6 +8,7 @@ import AllJobs from "../Pages/AllJobs";
 import AdminPanel from "../Pages/AdminPanel";
 import AdminSecureRour from "./AdminSecureRour";
 import SecureRout from "./SecureRout";
+import UserProfile from "../Components/UserProfile";
 
 const rout = createBrowserRouter([
     {
@@ -23,14 +24,6 @@ const rout = createBrowserRouter([
                 element: <AllJobs />
             },
             {
-                path: "/appliedJobs",
-                element: (
-                    <SecureRout>
-                        <div>Applied Jobs</div>
-                    </SecureRout>
-                )
-            },
-            {
                 path: "/blog",
                 element: <div>Blog</div>
             },
@@ -40,7 +33,29 @@ const rout = createBrowserRouter([
                     <SecureRout>
                         <DashboardPage />
                     </SecureRout>
-                )
+                ),
+                children: [
+                    {
+                        index: true,
+                        element: <Navigate to={"profile"} replace/>
+                    },
+                    {
+                        path: "profile",
+                        element: <UserProfile/>
+                    },
+                    {
+                        path: "postedJobs",
+                        element: <p>Posted Jobs</p>
+                    },
+                    {
+                        path: "appliedJobs",
+                        element: <p>Applied Jobs</p>
+                    },
+                    {
+                        path: "settings",
+                        element: <p>Settings</p>
+                    }
+                ]
             },
             {
                 path: "/login",

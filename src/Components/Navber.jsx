@@ -42,7 +42,6 @@ const Navber = () => {
         { name: "Home", to: "/" },
         { name: "All Jobs", to: "/allJobs" },
         { name: "Dashboard", to: "/dashboard" },
-        { name: "Applied Jobs", to: "/appliedJobs" },
         { name: "Blog", to: "/blog" },
         { name: "Admin Panel", to: "/admin-panel" }
     ];

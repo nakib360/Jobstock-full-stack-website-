@@ -1,5 +1,5 @@
+import { Outlet } from "react-router";
 import DashBoardAside from "../Components/DashBoardAside";
-import UserProfile from "../Components/UserProfile";
 
 const DashboardPage = () => {
   return (
@@ -8,7 +8,7 @@ const DashboardPage = () => {
         <DashBoardAside />
       </div>
       <div className="col-span-10">
-        <UserProfile />
+        <Outlet/>
       </div>
     </div>
   );
