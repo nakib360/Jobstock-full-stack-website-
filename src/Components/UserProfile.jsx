@@ -39,7 +39,7 @@ const UserProfile = () => {
                   </p>
                 )}
                 <img
-                  className="w-30 rounded-full"
+                  className="w-30 h-30 rounded-full"
                   src={
                     data?.avatar && data?.avatar.length > 0
                       ? data.avatar

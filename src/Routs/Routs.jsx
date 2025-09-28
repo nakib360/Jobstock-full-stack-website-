@@ -9,6 +9,7 @@ import AdminPanel from "../Pages/AdminPanel";
 import AdminSecureRour from "./AdminSecureRour";
 import SecureRout from "./SecureRout";
 import UserProfile from "../Components/UserProfile";
+import ProfileSettings from "../Components/ProfileSettings";
 
 const rout = createBrowserRouter([
     {
@@ -53,7 +54,7 @@ const rout = createBrowserRouter([
                     },
                     {
                         path: "settings",
-                        element: <p>Settings</p>
+                        element: <ProfileSettings/>
                     }
                 ]
             },
