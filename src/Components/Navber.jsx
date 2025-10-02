@@ -12,7 +12,7 @@ const Navber = () => {
     const [show, setShow] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
     const [data, setData] = useState({});
-    const { user, signOutUser, admin } = useContext(AuthContext);
+    const { user, signOutUser, admin, setShowLoginModel } = useContext(AuthContext);
 
     useEffect(() => {
         fetch(`http://localhost:3000/users?email=${user?.email}`)
@@ -47,7 +47,10 @@ const Navber = () => {
     ];
 
     const handleLogOut = () => {
-        signOutUser();
+        signOutUser()
+        .then(() => {
+            setShowLoginModel(true);
+        })
     }
 
     return (
@@ -148,7 +151,7 @@ const Navber = () => {
                 {user ? (
                     <div className="flex items-center gap-2">
                         <a data-tooltip-id="logOut" data-tooltip-content={"Log out"}>
-                            <Link onClick={handleLogOut} to={"/signup"} className="flex items-center gap-2 hover:text-[#0b8260]">
+                            <Link onClick={handleLogOut} className="flex items-center gap-2 hover:text-[#0b8260]">
                                 <FiLogOut />
                             </Link>
                         </a>
@@ -158,9 +161,9 @@ const Navber = () => {
                     </div>
                 ) : (
                     <div className="flex items-center gap-2">
-                        <Link to={"/login"} className="flex items-center gap-2 hover:text-[#0b8260]">
+                        <button onClick={() => setShowLoginModel(true)} className="flex items-center gap-2 hover:text-[#0b8260]">
                             <FiLogIn /> Log In
-                        </Link>
+                        </button>
                         <Link
                             to={"/signup"}
                             className="bg-[#0b8260] hover:bg-[#3b6e6003] border border-[#ffffff00] hover:border-[#0b8260] hover:text-[#0b8260] p-4 rounded-sm text-white flex items-center gap-2 transition-all"

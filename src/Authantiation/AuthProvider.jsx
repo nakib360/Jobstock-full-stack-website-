@@ -12,6 +12,7 @@ const AuthProvider = ({ children }) => {
     const auth = getAuth(app);
     const storage = getStorage(app)
     const [admin, setAdmin] = useState(false);
+    const [showLoginModel, setShowLoginModel] = useState(false);
 
     useEffect(() => {
         axios.get(`http://localhost:3000/users?email=${user?.email}`)
@@ -67,7 +68,9 @@ const AuthProvider = ({ children }) => {
         LogInUser,  
         signInWithGoogle,
         signOutUser,
-        storage
+        storage,
+        setShowLoginModel,
+        showLoginModel
     };
 
     return <AuthContext.Provider value={value} >{children}</AuthContext.Provider>;

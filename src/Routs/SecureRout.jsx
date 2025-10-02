@@ -1,19 +1,26 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AuthContext from "../Authantiation/AuthContext";
 import { Navigate } from "react-router";
 
 const SecureRout = ({ children }) => {
-    const { user, loading } = useContext(AuthContext);
+    const { user, loading, setShowLoginModel } = useContext(AuthContext);
 
-    if(loading){
+    useEffect(() => {
+        if (!user) {
+            setShowLoginModel(true)
+        }
+    }, [user, setShowLoginModel])
+
+    if (loading) {
         return <p>Loading.........</p>
     }
 
-    if(user){
+    if (user) {
         return children
     }
 
-    return <Navigate to={"/signup"}/>
+
+    return <Navigate to={"/"} />
 };
 
 export default SecureRout;

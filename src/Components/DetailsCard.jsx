@@ -1,6 +1,13 @@
-import { FaMapMarkerAlt, FaStar, FaBuilding, FaBriefcase, FaDollarSign } from "react-icons/fa";
+import { useState } from "react";
+import { FaMapMarkerAlt, FaStar, FaBuilding, FaBriefcase, FaDollarSign, FaHeart, FaRegHeart } from "react-icons/fa";
 
 const DetailsCard = ({ data }) => {
+  const [isFavorited, setIsFavorited] = useState(false);
+
+  const toggleFavorite = () => {
+    setIsFavorited(prev => !prev);
+  };
+
   return (
     <div className=" p-10 mx-auto bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
       {/* Header with Job Image */}
@@ -116,15 +123,31 @@ const DetailsCard = ({ data }) => {
           <p className="text-gray-600 text-sm">
             {data?.workLocation.city}, {data?.workLocation.state},{" "}
             {data?.workLocation.country}{" "}
-            
+
           </p>
         </div>
 
         {/* Apply Button */}
-        <div className="pt-4">
+        <div className="pt-3 flex items-center gap-5">
           <button className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-md font-medium transition">
             Apply Now
           </button>
+
+          <button
+            onClick={toggleFavorite}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '20px',
+              color: isFavorited ? 'red' : 'gray',
+            }}
+            aria-label="Toggle Favorite"
+          >
+            {isFavorited ? <FaHeart /> : <FaRegHeart />}
+          </button>
+
+
         </div>
       </div>
     </div>

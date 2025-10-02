@@ -11,7 +11,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 const UserProfile = () => {
   const { user } = useContext(AuthContext);
-  const [data, setData] = useState(null); // null হলে লোডিং ধরে নেবে
+  const [data, setData] = useState(null); 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const UserProfile = () => {
         <div className="absolute bg-white rounded-full border-4 border-white left-15">
           <div className={`${data?.admin ? "border-[#ffcc00]" : "border-[#0b8260]"} z-10 border-3 p-1 rounded-full w-33 relative`}>
             {loading ? (
-              <Skeleton className="p-10" circle width={120} height={120} />
+              <Skeleton className="p-10" circle width={118} height={118} />
             ) : (
               <>
                 {data?.admin && (

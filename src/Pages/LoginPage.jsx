@@ -1,7 +1,109 @@
+
+import { FcGoogle } from "react-icons/fc";
+import { useContext, useState } from "react";
+import { IoClose } from "react-icons/io5";
+import AuthContext from "../Authantiation/AuthContext";
+import { motion } from "framer-motion";
+import toast, { Toaster } from "react-hot-toast";
+
 const LoginPage = () => {
+  const { LogInUser, signInWithGoogle, setShowLoginModel } = useContext(AuthContext)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    LogInUser(email, password)
+      .then((res) => {
+        console.log(res);
+        setShowLoginModel(false);
+        toast.success("Loged in successfully!!!")
+      })
+  };
+
+  const handleGoogleLogin = () => {
+    signInWithGoogle()
+      .then(() => {
+        setShowLoginModel(false)
+      })
+  };
+
   return (
-    <div>
-      <p>this is a login page</p>
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="relative">
+        <motion.div
+          initial={{ y: 10, scale: 0.8, opacity: 0 }}
+          animate={{ y: -10, scale: 1, opacity: 1 }}
+          exit={{ y: 10, scale: 0.8, opacity: 0 }}
+          transition={{ duration:0.1, type: "spring", stiffness: 500, damping: 30 }}
+          className="bg-gray-300 rounded-2xl shadow-xl p-6 relative"
+        >
+          <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800">
+            Welcome Back
+          </h2>
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Email
+              </label>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="px-5 py-3 rounded-xl border border-white/30 bg-white/90 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 shadow-md pr-12"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            {/* Password */}
+            <div>
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Password
+              </label>
+              <input
+                type="password"
+                placeholder="Enter your password"
+                className="px-5 py-3 rounded-xl border border-white/30 bg-white/90 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 shadow-md pr-12"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            {/* Login Button */}
+            <button
+              type="submit"
+              className="w-full bg-emerald-500 hover:bg-emerald-600 transition-all text-white font-semibold px-6 py-3 rounded-xl shadow-lg"
+            >
+              Login
+            </button>
+          </form>
+
+          {/* Divider */}
+          <div className="flex items-center gap-3 my-5">
+            <div className="flex-1 h-px bg-gray-400"></div>
+            <span className="text-sm text-gray-400">or</span>
+            <div className="flex-1 h-px bg-gray-400"></div>
+          </div>
+
+          {/* Google Login */}
+          <button
+            onClick={handleGoogleLogin}
+            className=" flex items-center justify-center gap-3 w-full bg-white text-gray-700 font-medium px-6 py-3 rounded-xl shadow-md hover:bg-gray-100 transition-all"
+          >
+            <FcGoogle size={22} />
+            <span className="font-medium text-gray-700">Continue with Google</span>
+          </button>
+
+          <div className="absolute top-5 right-5">
+            <IoClose onClick={() => setShowLoginModel(false)} className="text-red-600 hover:text-red-500 text-xl" />
+          </div>
+        </motion.div>
+      </div>
+      <Toaster/>
     </div>
   );
 };
