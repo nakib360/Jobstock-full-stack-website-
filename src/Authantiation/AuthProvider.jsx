@@ -1,5 +1,6 @@
 import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import app from "../Firebase/Firebase.init";
+import { getStorage } from "firebase/storage";
 import AuthContext from "./AuthContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -9,6 +10,7 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const googleProvider = new GoogleAuthProvider();
     const auth = getAuth(app);
+    const storage = getStorage(app)
     const [admin, setAdmin] = useState(false);
 
     useEffect(() => {
@@ -58,12 +60,14 @@ const AuthProvider = ({ children }) => {
     const value = {
         user,
         loading,
+        setLoading,
         auth,
         admin,
         signUpUser,
-        LogInUser,
+        LogInUser,  
         signInWithGoogle,
         signOutUser,
+        storage
     };
 
     return <AuthContext.Provider value={value} >{children}</AuthContext.Provider>;

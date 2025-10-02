@@ -10,6 +10,7 @@ import AdminSecureRour from "./AdminSecureRour";
 import SecureRout from "./SecureRout";
 import UserProfile from "../Components/UserProfile";
 import ProfileSettings from "../Components/ProfileSettings";
+import JobDetails from "../Pages/JobDetails";
 
 const rout = createBrowserRouter([
     {
@@ -22,7 +23,16 @@ const rout = createBrowserRouter([
             },
             {
                 path: "/allJobs",
-                element: <AllJobs />
+                element: <AllJobs />,
+            },
+            {
+                path: "/jobDetails/:id",
+                element: (
+                    <SecureRout>
+                        <JobDetails/>
+                    </SecureRout>
+                ),
+                loader: ({ params }) => fetch(`http://localhost:3000/jobs/${params.id}`)
             },
             {
                 path: "/blog",
@@ -38,11 +48,11 @@ const rout = createBrowserRouter([
                 children: [
                     {
                         index: true,
-                        element: <Navigate to={"profile"} replace/>
+                        element: <Navigate to={"profile"} replace />
                     },
                     {
                         path: "profile",
-                        element: <UserProfile/>
+                        element: <UserProfile />
                     },
                     {
                         path: "postedJobs",
@@ -54,7 +64,7 @@ const rout = createBrowserRouter([
                     },
                     {
                         path: "settings",
-                        element: <ProfileSettings/>
+                        element: <ProfileSettings />
                     }
                 ]
             },

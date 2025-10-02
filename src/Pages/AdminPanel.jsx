@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import { FaUsers, FaBriefcase, FaClipboardList, FaCogs, FaSignOutAlt } from "react-icons/fa";
 import AuthContext from "../Authantiation/AuthContext";
+import AdminPanelAsideNav from "../Components/AdminPanelAsideNav";
 // import AuthContext from "../Authentication/AuthContext";
 
 const AdminPanel = () => {
-  const { signOutUser, admin } = useContext(AuthContext);
+  const { admin } = useContext(AuthContext);
 
   // শুধুমাত্র admin দেখতে পারবে
   if (!admin) {
@@ -15,39 +16,14 @@ const AdminPanel = () => {
     );
   }
 
-  const sidebarLinks = [
-    { name: "Dashboard", icon: <FaClipboardList /> },
-    { name: "Manage Users", icon: <FaUsers /> },
-    { name: "Manage Jobs", icon: <FaBriefcase /> },
-    { name: "Site Settings", icon: <FaCogs /> },
-  ];
-
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="grid grid-cols-12  bg-gray-100">
       {/* Sidebar */}
-      <div className="w-64 bg-white shadow-lg flex flex-col">
-        <div className="p-6 text-xl font-bold border-b">Admin Panel</div>
-        <ul className="flex-1 p-4 space-y-4">
-          {sidebarLinks.map((link, idx) => (
-            <li
-              key={idx}
-              className="flex items-center gap-3 p-2 hover:bg-gray-200 rounded cursor-pointer"
-            >
-              {link.icon}
-              <span>{link.name}</span>
-            </li>
-          ))}
-        </ul>
-        <button
-          onClick={signOutUser}
-          className="flex items-center gap-2 p-4 m-4 bg-red-500 text-white rounded hover:bg-red-600"
-        >
-          <FaSignOutAlt /> Logout
-        </button>
+      <div className="col-span-2">
+        <AdminPanelAsideNav />
       </div>
-
       {/* Main content */}
-      <div className="flex-1 p-8 overflow-auto">
+      <div className="col-span-10 p-8 overflow-auto">
         <h1 className="text-3xl font-semibold mb-6">Admin Dashboard</h1>
 
         {/* Example metrics */}

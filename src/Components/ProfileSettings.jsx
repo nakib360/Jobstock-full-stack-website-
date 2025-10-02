@@ -1,9 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import AuthContext from "../Authantiation/AuthContext";
 import { RxCrossCircled } from "react-icons/rx";
+import toast, { Toaster } from "react-hot-toast";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaCamera } from "react-icons/fa";
+import axios from "axios";
 
 const ProfileSettings = () => {
     const { user, setLoading } = useContext(AuthContext);
+    const [openConfirmSubmit, setConfirmSubmit] = useState(false);
+    const fileInputRef = useRef(null);
 
     const [data, setData] = useState({
         displayName: "",
@@ -31,6 +37,7 @@ const ProfileSettings = () => {
         createdAt: "",
         updatedAt: "",
     });
+    const [preview, setPreview] = useState(data?.avatar);
 
     useEffect(() => {
         fetch(`http://localhost:3000/users?email=${user?.email}`)
@@ -106,12 +113,18 @@ const ProfileSettings = () => {
             }),
         }
         setData(updated)
+        console.log(updated)
 
-        console.log("Updated data:", updated);
-        alert("Profile updated successfully!");
+        axios.put(`http://localhost:3000/users/${updated._id}`, updated)
+            .then(res => {
+                res?.statusText === "OK" && res?.status === 200 ?
+                    toast.success("Profile updated successfully!!!") :
+                    toast.error("Please try again!!!")
+                console.log(res)
+            });
+
     };
 
-    // Delete account
     const handleDelete = () => {
         if (window.confirm("Are you sure you want to delete your account?")) {
             console.log("Account deleted:", data._id);
@@ -119,17 +132,44 @@ const ProfileSettings = () => {
         }
     };
 
+    const handleInputRefClick = () => {
+        fileInputRef.current.click();
+    }
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+
+            setData((prev) => ({ ...prev, avatar: file }));
+        }
+    };
+
     return (
-        <div className="p-20">
-            <div className="max-w-4xl bg-gray-200 rounded-xl mx-auto space-y-8 p-6">
+        <div className="p-20 relative">
+            <div className="max-w-4xl bg-gray-200 rounded-xl mx-auto space-y-8 p-6 z-20">
                 {/* Avatar + Name */}
                 <div className="bg-gray-100 flex items-center gap-6 rounded-xl p-5 shadow">
-                    <div className="border-2 p-0.5 rounded-full border-green-600">
-                        <img
-                            src={data.avatar}
-                            alt="avatar"
-                            className="w-20 h-20 rounded-full border"
-                        />
+                    <div className="flex flex-col items-center gap-2 relative">
+                        <div className="border-2 p-0.5 rounded-full border-green-600">
+                            <img
+                                src={
+                                    preview ||
+                                    (typeof data?.avatar === "string" ? data.avatar : null) ||
+                                    "https://img.pikbest.com/png-images/20250228/user-profile-vector-flat-illustration-avatar-person-icon-gender-neutral-silhouette_11563975.png!sw800"
+                                }
+                                alt="avatar"
+                                className="object-cover w-25 h-25 rounded-full "
+                            />
+                        </div>
+                        <div onClick={handleInputRefClick} className="absolute bottom-0 right-0 bg-gray-400 text-white p-2 rounded-full cursor-pointer hover:bg-gray-500 transition-colors">
+                            <FaCamera className=" text-xl" />
+                        </div>
+                        <input className="hidden" ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} />
                     </div>
                     <div className="flex-1">
                         <div>
@@ -157,7 +197,7 @@ const ProfileSettings = () => {
                focus:outline-none border-gray-300"
                             type="email"
                             value={data.email}
-                            disabled 
+                            disabled
                             placeholder="Email"
                         />
                     </div>
@@ -351,7 +391,7 @@ const ProfileSettings = () => {
                 {/* Actions */}
                 <div className="flex justify-between">
                     <button
-                        onClick={handleSave}
+                        onClick={() => setConfirmSubmit(true)}
                         className="bg-emerald-500 text-white px-5 py-2 rounded hover:bg-emerald-600"
                     >
                         Save Changes
@@ -364,6 +404,40 @@ const ProfileSettings = () => {
                     </button>
                 </div>
             </div>
+            <AnimatePresence>
+                {
+                    openConfirmSubmit && (
+                        <motion.div
+                            initial={{ y: 10, scale: 0.8, opacity: 0 }}
+                            animate={{ y: -10, scale: 1, opacity: 1 }}
+                            exit={{ y: 10, scale: 0.8, opacity: 0 }}
+                            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                            className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl fixed z-50 w-96 bg-gray-100 shadow-xl p-6"
+                        >
+                            {/* Header */}
+                            <h2 className="text-xl font-bold text-red-500 mb-4 text-center">
+                                Warning!
+                            </h2>
+
+                            {/* Message */}
+                            <p className="text-gray-700 mb-6 text-center">
+                                Do you want to update your profile permanently? It will change your information.
+                            </p>
+
+                            {/* Buttons */}
+                            <div className="flex justify-center gap-4">
+                                <button onClick={() => { handleSave(), setConfirmSubmit(false) }} className="px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
+                                    OK
+                                </button>
+                                <button onClick={() => setConfirmSubmit(false)} className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors">
+                                    Cancel
+                                </button>
+                            </div>
+                        </motion.div>
+                    )
+                }
+            </AnimatePresence>
+            <Toaster />
         </div>
     );
 };

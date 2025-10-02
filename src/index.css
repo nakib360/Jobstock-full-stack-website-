@@ -1,6 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 @import "tailwindcss";
 @plugin "daisyui";
+@import "nprogress/nprogress.css";
+
+#nprogress .bar {
+  background: #0b8260 !important; /* তোমার theme color */
+}
+
 
 .roboto {
   font-family: "Plus Jakarta Sans", sans-serif;

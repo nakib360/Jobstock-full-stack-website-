@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 const JobCard = ({ job }) => {
     return (
         <div className=" relative bg-white rounded-xl  p-5 border border-black space-y-2 ">
@@ -20,7 +22,7 @@ const JobCard = ({ job }) => {
                     <p>-</p>
                     <p>&{job?.salary?.max}</p>
                 </div>
-                <button className="bg-[#0b8260] hover:bg-[#3b6e6003] border border-[#ffffff00] hover:border-[#0b8260] hover:text-[#0b8260] p-8 py-3 rounded-sm text-white flex justify-center items-center gap-2 transition-all">Apply Now</button>
+                <Link to={`/jobDetails/${job._id}`} className="bg-[#0b8260] hover:bg-[#3b6e6003] border border-[#ffffff00] hover:border-[#0b8260] hover:text-[#0b8260] p-8 py-3 rounded-sm text-white flex justify-center items-center gap-2 transition-all">See Details</Link>
             </div>
         </div>
     );
