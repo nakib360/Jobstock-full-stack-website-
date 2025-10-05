@@ -1,9 +1,9 @@
 import * as motion from "motion/react-client";
 import logo from "../../public/jobsStockIcon.png";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { FaUserCheck } from "react-icons/fa";
 import { FiLogIn, FiLogOut, FiUser } from "react-icons/fi";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import AuthContext from "../Authantiation/AuthContext";
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from 'react-tooltip';
@@ -13,6 +13,9 @@ const Navber = () => {
     const [lastScrollY, setLastScrollY] = useState(0);
     const [data, setData] = useState({});
     const { user, signOutUser, admin, setShowLoginModel } = useContext(AuthContext);
+    const logInRef = useRef(null);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         fetch(`http://localhost:3000/users?email=${user?.email}`)
@@ -48,9 +51,17 @@ const Navber = () => {
 
     const handleLogOut = () => {
         signOutUser()
-        .then(() => {
-            setShowLoginModel(true);
-        })
+            .then(() => {
+                setShowLoginModel(true);
+            })
+    }
+
+    const handleSignInRef = () => {
+        navigate("/signup");
+    }
+
+    const handleLoginRef = () => {
+        logInRef.current.click();
     }
 
     return (
@@ -60,15 +71,15 @@ const Navber = () => {
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="fixed top-0 left-0 w-full bg-white shadow-sm z-50"
         >
-            <div className="navbar p-5 px-20 flex justify-between items-center">
+            <div className="navbar p-5 md:px-20 flex justify-between items-center">
                 {/* Navbar Start */}
-                <div className="flex items-center gap-10">
+                <div className={`${!user && "w-full md:w-auto "} flex justify-between  md:justify-center items-center gap-2 md:gap-10`}>
                     {/* Mobile dropdown */}
                     <div className="dropdown lg:hidden">
                         <div
                             tabIndex={0}
                             role="button"
-                            className="btn btn-ghost flex items-center"
+                            className=" flex items-center"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -87,34 +98,51 @@ const Navber = () => {
                         </div>
                         <ul
                             tabIndex={0}
-                            className="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow z-10"
+                            className="menu menu-sm dropdown-content bg-white rounded-box mt-3 w-52 p-2 shadow z-10"
                         >
-                            <li>
-                                {links.map((link, idx) => {
-                                    if (link.name === "Admin Panel" && !admin) return null;
-                                    return (
-                                        <li className="hover:text-[#0b8260]" key={idx}>
-                                            <NavLink
-                                                className={({ isActive }) => (isActive ? "text-yellow-500" : "")}
-                                                to={link.to}
-                                            >
-                                                {link.name}
-                                            </NavLink>
-                                        </li>
-                                    )
-                                })}
-                            </li>
+                            {links.map((link, idx) => {
+                                if (link.name === "Admin Panel" && !admin) return null;
+                                return (
+                                    <li className="" key={idx}>
+                                        <NavLink
+                                            className={({ isActive }) => (isActive ? "text-yellow-500 bg-yellow-500/10" : "hover:text-[#0b8260] hover:bg-[#0b8260]/20 rounded-sm")}
+                                            to={link.to}
+                                        >
+                                            {link.name}
+                                        </NavLink>
+                                    </li>
+                                )
+                            })}
+                            {
+                                !user && <>
+                                    <li className="hover:text-[#0b8260] hover:bg-[#0b8260]/20 rounded-sm">
+                                        <NavLink
+                                            onClick={handleLoginRef}
+                                        >
+                                            Log In
+                                        </NavLink>
+                                    </li>
+                                    <li className="">
+                                        <button
+                                            className={location.pathname === "/signup" ? "text-yellow-500 bg-yellow-500/10" : "hover:text-[#0b8260] hover:bg-[#0b8260]/20 rounded-sm"}
+                                            onClick={handleSignInRef}
+                                        >
+                                            Sign Up Now
+                                        </button>
+                                    </li>
+                                </>
+                            }
                         </ul>
                     </div>
 
                     {/* Logo */}
-                    <Link to="#" className="font-bold text-xl flex items-center gap-3">
+                    <Link to="#" className={`${!user && "flex-row-reverse md:flex-row"} font-bold text-xl flex  items-center gap-3`}>
                         <img src={logo} alt="Logo" className="h-8 w-auto" />
                         Job&nbsp;stock
                     </Link>
 
                     {/* Desktop nav */}
-                    <div className="navbar-center hidden lg:flex">
+                    <div className="navbar-center hidden lg:flex ">
                         <ul className="flex gap-6 relative">
                             {links.map((link, idx) => {
                                 if (link.name === "Admin Panel" && !admin) return null;
@@ -161,12 +189,12 @@ const Navber = () => {
                     </div>
                 ) : (
                     <div className="flex items-center gap-2">
-                        <button onClick={() => setShowLoginModel(true)} className="flex items-center gap-2 hover:text-[#0b8260]">
+                        <button ref={logInRef} onClick={() => setShowLoginModel(true)} className="hidden md:flex items-center gap-2 hover:text-[#0b8260]">
                             <FiLogIn /> Log In
                         </button>
                         <Link
                             to={"/signup"}
-                            className="bg-[#0b8260] hover:bg-[#3b6e6003] border border-[#ffffff00] hover:border-[#0b8260] hover:text-[#0b8260] p-4 rounded-sm text-white flex items-center gap-2 transition-all"
+                            className="bg-[#0b8260] hover:bg-[#3b6e6003] border border-[#ffffff00] hover:border-[#0b8260]  hover:text-[#0b8260] p-4 rounded-sm text-white hidden md:flex items-center gap-2 transition-all"
                         >
                             <FaUserCheck /> Sign Up Now
                         </Link>

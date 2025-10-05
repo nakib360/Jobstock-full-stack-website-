@@ -5,15 +5,16 @@ import { Navigate } from "react-router";
 const SecureRout = ({ children }) => {
     const { user, loading, setShowLoginModel } = useContext(AuthContext);
 
+    if (loading) {
+        return <p>Loading.........</p>
+    }
+    
     useEffect(() => {
         if (!user) {
             setShowLoginModel(true)
         }
     }, [user, setShowLoginModel])
 
-    if (loading) {
-        return <p>Loading.........</p>
-    }
 
     if (user) {
         return children

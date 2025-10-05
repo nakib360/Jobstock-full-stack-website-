@@ -65,7 +65,7 @@ const SignupPage = () => {
         console.log(result);
         axios.post("http://localhost:3000/users", {
           displayName: values?.firstName && values?.lastName ? values?.firstName + " " + values?.lastName : "New User",
-          email: values?.email ?? null,
+          email: values?.email.toLowerCase() ?? null,
           phoneNumber: values?.phone ?? null,
           gender: values?.gender ?? null,
           password: values?.password ?? null,
@@ -195,7 +195,7 @@ const SignupPage = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="w-full m-20 bg-[#0b8260] backdrop-blur-lg rounded-2xl shadow-2xl p-10"
+        className="w-full m-5 md:m-20 bg-[#0b8260] backdrop-blur-lg rounded-2xl shadow-2xl p-4 md:p-10"
       >
         <h2 className="text-3xl font-bold text-white text-center mb-6">
           Create Your Account
@@ -207,7 +207,7 @@ const SignupPage = () => {
         {/* Form */}
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          className="md:grid grid-cols-1 md:grid-cols-2 gap-6"
         >
           {[
             { label: "First Name", type: "text", name: "firstName" },
@@ -289,7 +289,7 @@ const SignupPage = () => {
           <motion.div
             initial="hidden"
             animate="visible"
-            className="px-2 text-sm space-y-1">
+            className="px-2 my-5 md:my-0 text-sm space-y-1">
             <p className="flex items-center gap-1">
               {uppercase ? (
                 <MdOutlineDone className="text-green-500 font-bold" />
@@ -394,7 +394,7 @@ const SignupPage = () => {
           custom={11}
           initial="hidden"
           animate="visible"
-          className="flex justify-center gap-5"
+          className="flex flex-col md:flex-row justify-center gap-5"
         >
           <motion.button
             whileHover={{ scale: 1.02 }}

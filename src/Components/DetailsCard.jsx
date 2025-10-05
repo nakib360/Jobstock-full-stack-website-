@@ -1,12 +1,41 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaMapMarkerAlt, FaStar, FaBuilding, FaBriefcase, FaDollarSign, FaHeart, FaRegHeart } from "react-icons/fa";
+import AuthContext from "../Authantiation/AuthContext";
+import axios from "axios";
 
 const DetailsCard = ({ data }) => {
   const [isFavorited, setIsFavorited] = useState(false);
+  const { user } = useContext(AuthContext)
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    fetch(`http://localhost:3000/users?email=${user?.email}`)
+      .then(res => res.json())
+      .then(data => {
+        setUserData(data[0]);
+        console.log(data)
+      })
+  }, [user?.email]);
 
   const toggleFavorite = () => {
     setIsFavorited(prev => !prev);
   };
+
+  const handleApply = (userId) => {
+    axios.post(`http://localhost:3000/jobs/${data?._id}`, { userId })
+      .then(res => {
+        console.log(res)
+        console.log(userId, "is added")
+      })
+
+    axios.post(`http://localhost:3000/users/${userData?._id}`, { jobId: data._id })
+      .then(res => {
+        console.log(res)
+        console.log(data?._id, "is added" )
+      })
+
+    // console.log("UserId :", userId, ",", "jobid :", data?._id);
+  }
 
   return (
     <div className=" p-10 mx-auto bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
@@ -129,7 +158,7 @@ const DetailsCard = ({ data }) => {
 
         {/* Apply Button */}
         <div className="pt-3 flex items-center gap-5">
-          <button className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-md font-medium transition">
+          <button onClick={() => handleApply(userData?._id)} className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-md font-medium transition">
             Apply Now
           </button>
 

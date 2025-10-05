@@ -12,9 +12,8 @@ import { AnimatePresence } from "framer-motion";
 
 
 const MainLayout = () => {
-  const { showLoginModel } = useContext(AuthContext);
+  const { showLoginModel, user } = useContext(AuthContext);
 
-  const { user } = useContext(AuthContext);
   return (
     <div className="min-h-screen bg-white text-black roboto overflow-x-hidden bg-dot relative" >
       <ScrollProgress />
@@ -25,7 +24,7 @@ const MainLayout = () => {
       </Helmet>
 
       <Navber />
-      <div className={`${user ? "mt-19" : "mt-24"} z-30`}>
+      <div className={`${user ? "mt-19" : "mt-16 md:mt-24"} z-30`}>
         <Outlet />
       </div>
       <Footer />
