@@ -9,6 +9,7 @@ import AuthContext from "../Authantiation/AuthContext";
 import ScrollProgress from "../Components/ScrollProgress";
 import LoginPage from "../Pages/LoginPage";
 import { AnimatePresence } from "framer-motion";
+import { Toaster } from "react-hot-toast";
 
 
 const MainLayout = () => {
@@ -38,7 +39,7 @@ const MainLayout = () => {
           )
         }
       </AnimatePresence>
-
+        <Toaster/>
     </div>
   );
 };

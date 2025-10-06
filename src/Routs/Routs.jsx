@@ -11,6 +11,9 @@ import SecureRout from "./SecureRout";
 import UserProfile from "../Components/UserProfile";
 import ProfileSettings from "../Components/ProfileSettings";
 import JobDetails from "../Pages/JobDetails";
+import AppliedJobs from "../Components/AppliedJobs";
+import EditAllJobs from "../Components/EditAllJobs";
+import EditAllUsers from "../Components/EditAllUsers";
 
 const rout = createBrowserRouter([
     {
@@ -60,7 +63,7 @@ const rout = createBrowserRouter([
                     },
                     {
                         path: "appliedJobs",
-                        element: <p>Applied Jobs</p>
+                        element: <AppliedJobs/>
                     },
                     {
                         path: "settings",
@@ -78,7 +81,17 @@ const rout = createBrowserRouter([
                     <AdminSecureRour>
                         <AdminPanel />
                     </AdminSecureRour>
-                )
+                ),
+                children: [
+                    {
+                        path: "allJobs",
+                        element: <EditAllJobs/>
+                    },
+                    {
+                        path: "allUsers",
+                        element: <EditAllUsers/>
+                    }
+                ]
             }
         ]
     },

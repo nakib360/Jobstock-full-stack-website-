@@ -84,7 +84,7 @@ const HotJobs = ({ limit }) => {
                                 <select
                                     value={sortOrder}
                                     onChange={e => setSortOrder(e.target.value)}
-                                    className=" text-black border border-white/30 bg-white focus:border-white/30 p-3 rounded-xl outline-none shadow-sm transition transition-all font-bold"
+                                    className=" text-black border border-white/30 bg-white focus:border-white/30 p-3 rounded-xl outline-none shadow-sm transition-all font-bold"
                                 >
                                     <option className="roboto font-semibold" value="" disabled>Sort by</option>
                                     {

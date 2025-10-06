@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { FaMapMarkerAlt, FaStar, FaBuilding, FaBriefcase, FaDollarSign, FaHeart, FaRegHeart } from "react-icons/fa";
 import AuthContext from "../Authantiation/AuthContext";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const DetailsCard = ({ data }) => {
   const [isFavorited, setIsFavorited] = useState(false);
@@ -25,13 +26,13 @@ const DetailsCard = ({ data }) => {
     axios.post(`http://localhost:3000/jobs/${data?._id}`, { userId })
       .then(res => {
         console.log(res)
-        console.log(userId, "is added")
+        toast.success(`${userData?.displayName} is successfully applied.`)
       })
 
     axios.post(`http://localhost:3000/users/${userData?._id}`, { jobId: data._id })
       .then(res => {
         console.log(res)
-        console.log(data?._id, "is added" )
+        toast.success(`${data?.jobName} is successfully applied.`)
       })
 
     // console.log("UserId :", userId, ",", "jobid :", data?._id);
@@ -158,9 +159,23 @@ const DetailsCard = ({ data }) => {
 
         {/* Apply Button */}
         <div className="pt-3 flex items-center gap-5">
-          <button onClick={() => handleApply(userData?._id)} className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-md font-medium transition">
-            Apply Now
-          </button>
+          {
+            userData?.myAppliedJobs.includes(data?._id) ? (
+              <div>
+                <button
+                  disabled
+                  className="px-6 py-3 bg-emerald-600 text-white rounded-xl shadow-md font-medium transition cursor-not-allowed opacity-50 hover:bg-emerald-600"
+                >
+                  Already Applied
+                </button>
+
+              </div>
+            ) : (
+              <button onClick={() => handleApply(userData?._id)} className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-md font-medium transition">
+                Apply Now
+              </button>
+            )
+          }
 
           <button
             onClick={toggleFavorite}

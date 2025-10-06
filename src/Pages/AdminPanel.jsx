@@ -1,13 +1,29 @@
-import { useContext } from "react";
-import { FaUsers, FaBriefcase, FaClipboardList, FaCogs, FaSignOutAlt } from "react-icons/fa";
+import { useContext, useEffect, useState } from "react";
 import AuthContext from "../Authantiation/AuthContext";
 import AdminPanelAsideNav from "../Components/AdminPanelAsideNav";
-// import AuthContext from "../Authentication/AuthContext";
+import axios from "axios";
 
 const AdminPanel = () => {
+  const [jobs, setJobs] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { user } = useContext(AuthContext)
   const { admin } = useContext(AuthContext);
 
-  // শুধুমাত্র admin দেখতে পারবে
+  useEffect(() => {
+    axios.get(`http://localhost:3000/jobs`)
+      .then((res) => {
+        console.log(res.data)
+        setJobs(res.data);
+        setLoading(false);
+      })
+
+    axios.get(`http://localhost:3000/users`)
+      .then(res => {
+        setUsers(res.data)
+      })
+  }, [user?.email])
+
   if (!admin) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -17,25 +33,23 @@ const AdminPanel = () => {
   }
 
   return (
-    <div className="grid grid-cols-12  bg-gray-100">
+    <div className="grid grid-cols-12 ">
       {/* Sidebar */}
       <div className="col-span-2">
         <AdminPanelAsideNav />
       </div>
       {/* Main content */}
       <div className="col-span-10 p-8 overflow-auto">
-        <h1 className="text-3xl font-semibold mb-6">Admin Dashboard</h1>
 
-        {/* Example metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
           <div className="p-6 bg-white shadow rounded-lg">
             <h2 className="text-lg font-medium">Total Users</h2>
-            <p className="text-2xl font-bold mt-2">120</p>
+            <p className="text-2xl font-bold mt-2">{users.length}</p>
           </div>
 
           <div className="p-6 bg-white shadow rounded-lg">
             <h2 className="text-lg font-medium">Jobs Posted</h2>
-            <p className="text-2xl font-bold mt-2">45</p>
+            <p className="text-2xl font-bold mt-2">{jobs.length}</p>
           </div>
 
           <div className="p-6 bg-white shadow rounded-lg">
