@@ -12,8 +12,8 @@ import UserProfile from "../Components/UserProfile";
 import ProfileSettings from "../Components/ProfileSettings";
 import JobDetails from "../Pages/JobDetails";
 import AppliedJobs from "../Components/AppliedJobs";
-import EditAllJobs from "../Components/EditAllJobs";
-import EditAllUsers from "../Components/EditAllUsers";
+import AllJobsTable from "../Components/AllJobsTable";
+import AllUsersTable from "../Components/AllUsersTable";
 
 const rout = createBrowserRouter([
     {
@@ -84,12 +84,18 @@ const rout = createBrowserRouter([
                 ),
                 children: [
                     {
+                        index: true,
+                        element: <Navigate to={"allJobs"} replace/>
+                    },
+                    {
                         path: "allJobs",
-                        element: <EditAllJobs/>
+                        element: <AllJobsTable/>,
+                        loader: () => fetch("http://localhost:3000/jobs")
                     },
                     {
                         path: "allUsers",
-                        element: <EditAllUsers/>
+                        element: <AllUsersTable/>,
+                        loader: () => fetch("http://localhost:3000/users")
                     }
                 ]
             }
