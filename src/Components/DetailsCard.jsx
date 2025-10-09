@@ -82,8 +82,8 @@ const DetailsCard = ({ data }) => {
           <div className="flex items-center gap-2">
             <FaDollarSign className="text-emerald-600" />
             <span>
-              {data?.salary.min} - {data?.salary.max} {data?.salary.currency} (
-              {data?.salary.period})
+              {data?.salary?.min} - {data?.salary?.max} {data?.salary?.currency} (
+              {data?.salary?.period})
             </span>
           </div>
           <div>
@@ -109,14 +109,14 @@ const DetailsCard = ({ data }) => {
             Requirements
           </h4>
           <ul className="list-disc list-inside text-gray-600 space-y-1 text-sm">
-            {data?.requirements.education.map((edu, idx) => (
+            {data?.requirements?.education?.map((edu, idx) => (
               <li key={idx}>{edu}</li>
             ))}
             <li>
-              <strong>Skills:</strong> {data?.requirements.skills.join(", ")}
+              <strong>Skills:</strong> {data?.requirements?.skills?.join(", ")}
             </li>
             <li>
-              <strong>Experience:</strong> {data?.requirements.experience}
+              <strong>Experience:</strong> {data?.requirements?.experience}
             </li>
           </ul>
         </div>
@@ -127,7 +127,7 @@ const DetailsCard = ({ data }) => {
             Responsibilities
           </h4>
           <ul className="list-disc list-inside text-gray-600 space-y-1 text-sm">
-            {data?.responsibilities.map((res, idx) => (
+            {data?.responsibilities?.map((res, idx) => (
               <li key={idx}>{res}</li>
             ))}
           </ul>
@@ -139,7 +139,7 @@ const DetailsCard = ({ data }) => {
             Qualifications
           </h4>
           <ul className="list-disc list-inside text-gray-600 space-y-1 text-sm">
-            {data?.qualifications.map((qual, idx) => (
+            {data?.qualifications?.map((qual, idx) => (
               <li key={idx}>{qual}</li>
             ))}
           </ul>
@@ -151,8 +151,8 @@ const DetailsCard = ({ data }) => {
             Work Location
           </h4>
           <p className="text-gray-600 text-sm">
-            {data?.workLocation.city}, {data?.workLocation.state},{" "}
-            {data?.workLocation.country}{" "}
+            {data?.workLocation?.city}, {data?.workLocation?.state},{" "}
+            {data?.workLocation?.country}{" "}
 
           </p>
         </div>
@@ -160,7 +160,7 @@ const DetailsCard = ({ data }) => {
         {/* Apply Button */}
         <div className="pt-3 flex items-center gap-5">
           {
-            userData?.myAppliedJobs.includes(data?._id) ? (
+            userData?.myAppliedJobs?.includes(data?._id) ? (
               <div>
                 <button
                   disabled

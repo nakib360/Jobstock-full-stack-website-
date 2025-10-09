@@ -10,6 +10,8 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext)
   const { admin } = useContext(AuthContext);
+  const [userLength, setUserLength] = useState(0);
+  const [jobLength, setJobLength] = useState(0);
 
   useEffect(() => {
     axios.get(`http://localhost:3000/jobs`)
@@ -24,6 +26,11 @@ const AdminPanel = () => {
         setUsers(res.data)
       })
   }, [user?.email])
+
+  useEffect(() => {
+    setUserLength(users?.length);
+    setJobLength(jobs?.length)
+  }, [users?.length, jobs?.length])
 
   if (!admin) {
     return (
@@ -45,12 +52,12 @@ const AdminPanel = () => {
         <div className="flex items-center justify-around gap-6 mb-6">
           <div className="p-6 w-full bg-[#04343a] shadow rounded-lg">
             <h2 className="text-lg font-medium text-green-500">Total Users</h2>
-            <p className="text-2xl font-bold mt-2 text-white">{users.length}</p>
+            <p className="text-2xl font-bold mt-2 text-white">{userLength}</p>
           </div>
 
           <div className="p-6 w-full bg-[#04343a] shadow rounded-lg">
             <h2 className="text-lg font-medium text-green-500">Jobs Posted</h2>
-            <p className="text-2xl font-bold mt-2 text-white">{jobs.length}</p>
+            <p className="text-2xl font-bold mt-2 text-white">{jobLength}</p>
           </div>
         </div>
 

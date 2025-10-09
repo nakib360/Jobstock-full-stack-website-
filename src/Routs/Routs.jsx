@@ -14,6 +14,7 @@ import JobDetails from "../Pages/JobDetails";
 import AppliedJobs from "../Components/AppliedJobs";
 import AllJobsTable from "../Components/AllJobsTable";
 import AllUsersTable from "../Components/AllUsersTable";
+import MyPostedJobs from "../Components/MyPostedJobs";
 
 const rout = createBrowserRouter([
     {
@@ -59,7 +60,7 @@ const rout = createBrowserRouter([
                     },
                     {
                         path: "postedJobs",
-                        element: <p>Posted Jobs</p>
+                        element: <MyPostedJobs/>
                     },
                     {
                         path: "appliedJobs",

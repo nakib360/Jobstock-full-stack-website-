@@ -38,7 +38,7 @@ const AppliedJobs = () => {
                 {
                     loading ? Array(3).fill().map((_, idx) => <SkeletonLoader key={idx} />)
                         :
-                        filteredJobs.map(job => (
+                        filteredJobs?.map(job => (
                             <div key={job._id}>
                                 <JobCard job={job} />
                             </div>
