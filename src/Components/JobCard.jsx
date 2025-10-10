@@ -78,7 +78,7 @@ const JobCard = ({ job, hotUpdate }) => {
                 <p className="font-semibold">{job?.jobName}</p>
                 <div className="flex items-center flex-wrap text-center gap-2 justify-center">
                     {
-                        job?.requirements?.skills?.map((tools, idx) => (
+                        (job?.requirements?.skills || []).map((tools, idx) => (
                             <div key={idx} className="text-sm text-gray-500 bg-gray-400/20 p-2 py-1 rounded-sm">{tools}</div>
                         ))
                     }

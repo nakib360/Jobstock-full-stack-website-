@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useLoaderData } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
+import EditJob from "./EditJob";
 
 const AllJobsTable = () => {
     const loadedData = useLoaderData();
@@ -10,13 +11,15 @@ const AllJobsTable = () => {
     const [openConfirmSubmit, setConfirmSubmit] = useState(false);
     const [selectedJobId, setSelectedJobId] = useState(null);
 
+    const [openEditForm, setOpenEditForm] = useState(false);
+    const [selectedJob, setSelectedJob] = useState(null);
+
     const handleDelete = (id) => {
         axios
             .delete(`http://localhost:3000/jobs/${id}`)
             .then((res) => {
                 if (res?.data?.deletedCount > 0) {
                     toast.success("Job is successfully deleted");
-
                     const remaining = jobs.filter((job) => job?._id !== id);
                     setJobs(remaining);
                 } else {
@@ -39,6 +42,15 @@ const AllJobsTable = () => {
             setConfirmSubmit(false);
             setSelectedJobId(null);
         }
+    };
+
+    const openEditModal = (job) => {
+        setSelectedJob(job);
+        setOpenEditForm(true);
+    };
+
+    const hotUpdate = (updatedJob) => {
+        setJobs(jobs.map(job => job._id === updatedJob._id ? updatedJob : job));
     };
 
     return (
@@ -67,7 +79,10 @@ const AllJobsTable = () => {
                                     {job?.appliedUsers?.length || 0}
                                 </td>
                                 <td className="border border-white/50 px-4 py-2 space-x-2">
-                                    <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+                                    <button
+                                        onClick={() => openEditModal(job)}
+                                        className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                    >
                                         Edit
                                     </button>
                                     <button
@@ -83,6 +98,7 @@ const AllJobsTable = () => {
                 </table>
             </div>
 
+            {/* Delete Confirmation Modal */}
             <AnimatePresence>
                 {openConfirmSubmit && (
                     <motion.div
@@ -113,6 +129,47 @@ const AllJobsTable = () => {
                             </button>
                         </div>
                     </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Edit Job Modal */}
+            <AnimatePresence>
+                {openEditForm && selectedJob && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 0.6 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            onClick={() => setOpenEditForm(false)}
+                            className="fixed inset-0 bg-black z-40"
+                        />
+
+                        <motion.div
+                            initial={{ y: 50, scale: 0.8, opacity: 0 }}
+                            animate={{ y: 0, scale: 1, opacity: 1 }}
+                            exit={{ y: 50, scale: 0.8, opacity: 0 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[90%] max-w-4xl rounded-2xl border border-green-600 bg-white shadow-2xl overflow-hidden"
+                        >
+                            <div className="flex justify-end p-3">
+                                <button
+                                    onClick={() => setOpenEditForm(false)}
+                                    className="text-gray-500 hover:text-red-500 text-lg font-bold"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+
+                            <div className="max-h-[80vh] overflow-y-auto">
+                                <EditJob
+                                    job={selectedJob}
+                                    closeModal={() => setOpenEditForm(false)}
+                                    hotUpdate={hotUpdate}
+                                />
+                            </div>
+                        </motion.div>
+                    </>
                 )}
             </AnimatePresence>
 
