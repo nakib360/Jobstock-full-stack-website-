@@ -65,9 +65,10 @@ const HotJobs = ({ limit }) => {
                             <p className="text-sm text-center">Stay ahead with opportunities that match your career goals, connect with leading employers, and take the next step toward building the future you deserve.</p>
                         </div>
                     ) : (
-                        <div className="bg-[#0b8260] rounded-xl p-10 flex justify-between items-center">
+                        <div className="bg-[#0b8260] rounded-xl p-5 md:p-10 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
 
-                            <div className="relative w-full max-w-sm">
+                            {/* Search Box */}
+                            <div className="relative w-full md:max-w-sm">
                                 <input
                                     type="text"
                                     onChange={(e) => {
@@ -75,37 +76,36 @@ const HotJobs = ({ limit }) => {
                                         setSearchQuery(e.target.value)
                                     }}
                                     placeholder="Search your dream job"
-                                    className="text-white placeholder:text-white/40 placeholder:text-sm w-full max-w-sm border border-gray-300 focus:ring-2 focus:ring-white focus:border-white/10 p-2 rounded-xl outline-none shadow-sm transition"
+                                    className="text-white placeholder:text-white/40 placeholder:text-sm w-full border border-gray-300 focus:ring-2 focus:ring-white focus:border-white/10 p-2 rounded-xl outline-none shadow-sm transition"
                                 />
                                 <FaSearch className={`${innerText ? "text-white" : "text-white/40"} absolute right-3 top-1/2 -translate-y-1/2 text-sm`} />
                             </div>
 
-                            <div className="relative flex justify-center items-center gap-1">
+                            {/* Sorting */}
+                            <div className="relative flex justify-center items-center gap-2 w-full md:w-auto">
                                 <select
                                     value={sortOrder}
                                     onChange={e => setSortOrder(e.target.value)}
-                                    className=" text-black border border-white/30 bg-white focus:border-white/30 p-3 rounded-xl outline-none shadow-sm transition-all font-bold"
+                                    className="text-black border border-white/30 bg-white focus:border-white/30 p-3 rounded-xl outline-none shadow-sm transition-all font-bold w-full md:w-auto"
                                 >
                                     <option className="roboto font-semibold" value="" disabled>Sort by</option>
-                                    {
-                                        sortingOptions.map((opt, idx) => (
-                                            <option key={idx} className="roboto font-semibold" value={opt.value}>{opt.option}</option>
-                                        ))
-                                    }
+                                    {sortingOptions.map((opt, idx) => (
+                                        <option key={idx} className="roboto font-semibold" value={opt.value}>{opt.option}</option>
+                                    ))}
                                 </select>
-                                {
-                                    sortOrder.length > 0 && (
-                                        <button
-                                            onClick={() => setSortOrder("")}
-                                            className="p-3 rounded-xl bg-red-200 text-red-600 text-2xl font-bold"
-                                        >
-                                            <RxCross2 />
-                                        </button>
-                                    )
-                                }
+
+                                {sortOrder.length > 0 && (
+                                    <button
+                                        onClick={() => setSortOrder("")}
+                                        className="p-3 rounded-xl bg-red-200 text-red-600 text-2xl font-bold"
+                                    >
+                                        <RxCross2 />
+                                    </button>
+                                )}
                             </div>
 
                         </div>
+
                     )
             }
             {/* all jobs */}
