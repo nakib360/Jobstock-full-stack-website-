@@ -20,10 +20,10 @@ const Need = () => {
 
     return (
         <div className="mt-10">
-            <div className="bg-[#04343a] p-10 space-y-4">
+            <div className="bg-[#04343a] p-5 md:p-10 space-y-4">
                 <p className="text-center font-semibold text-3xl text-white">Choose What You Need</p>
 
-                <div className="flex items-center gap-4 justify-center px-5">
+                <div className="flex flex-col md:flex-row items-center gap-4 justify-center md:px-5">
                     {
                         needs.map((need, idx) => (
                             <div key={idx} className="bg-white/20 p-10 rounded-xl min-h-60 space-y-4">

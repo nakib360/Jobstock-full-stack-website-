@@ -56,7 +56,7 @@ const HotJobs = ({ limit }) => {
     }, [data, limit, searchQuery, sortOrder]);
 
     return (
-        <div className="p-10 space-y-4">
+        <div className="p-5 md:p-10 space-y-4">
             {
                 location.pathname === "/" ?
                     (

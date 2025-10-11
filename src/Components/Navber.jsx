@@ -16,6 +16,7 @@ const Navber = () => {
     const logInRef = useRef(null);
     const navigate = useNavigate();
     const location = useLocation();
+    const [showDropdown, setShowDropdown] = useState(false);
 
     useEffect(() => {
         fetch(`http://localhost:3000/users?email=${user?.email}`)
@@ -56,9 +57,9 @@ const Navber = () => {
             })
     }
 
-    const handleSignInRef = () => {
-        navigate("/signup");
-    }
+    // const handleSignInRef = () => {
+    //     navigate("/signup");
+    // }
 
     const handleLoginRef = () => {
         logInRef.current.click();
@@ -71,15 +72,16 @@ const Navber = () => {
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="fixed top-0 left-0 w-full bg-white shadow-sm z-50"
         >
-            <div className="navbar p-5 md:px-20 flex justify-between items-center">
+            <div className="navbar p-5 lg:px-20 flex justify-between items-center">
                 {/* Navbar Start */}
-                <div className={`${!user && "w-full md:w-auto "} flex justify-between  md:justify-center items-center gap-2 md:gap-10`}>
+                <div className={`${!user && "w-full md:w-auto "} flex justify-between  md:justify-center items-center gap-2 lg:gap-10`}>
+
                     {/* Mobile dropdown */}
-                    <div className="dropdown lg:hidden">
-                        <div
-                            tabIndex={0}
-                            role="button"
-                            className=" flex items-center"
+                    <div className="lg:hidden relative">
+                        <button
+                            type="button"
+                            className="flex items-center"
+                            onClick={() => setShowDropdown(!showDropdown)}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -95,45 +97,62 @@ const Navber = () => {
                                     d="M4 6h16M4 12h8m-8 6h16"
                                 />
                             </svg>
-                        </div>
-                        <ul
-                            tabIndex={0}
-                            className="menu menu-sm dropdown-content bg-white rounded-box mt-3 w-52 p-2 shadow z-10"
-                        >
-                            {links.map((link, idx) => {
-                                if (link.name === "Admin Panel" && !admin) return null;
-                                return (
-                                    <li className="" key={idx}>
-                                        <NavLink
-                                            className={({ isActive }) => (isActive ? "text-yellow-500 bg-yellow-500/10" : "hover:text-[#0b8260] hover:bg-[#0b8260]/20 rounded-sm")}
-                                            to={link.to}
-                                        >
-                                            {link.name}
-                                        </NavLink>
-                                    </li>
-                                )
-                            })}
-                            {
-                                !user && <>
-                                    <li className="hover:text-[#0b8260] hover:bg-[#0b8260]/20 rounded-sm">
-                                        <NavLink
-                                            onClick={handleLoginRef}
-                                        >
-                                            Log In
-                                        </NavLink>
-                                    </li>
-                                    <li className="">
-                                        <button
-                                            className={location.pathname === "/signup" ? "text-yellow-500 bg-yellow-500/10" : "hover:text-[#0b8260] hover:bg-[#0b8260]/20 rounded-sm"}
-                                            onClick={handleSignInRef}
-                                        >
-                                            Sign Up Now
-                                        </button>
-                                    </li>
-                                </>
-                            }
-                        </ul>
+                        </button>
+
+                        {showDropdown && (
+                            <ul className="absolute top-full left-0 w-52 mt-2 bg-white shadow-lg rounded-md p-2 z-50">
+                                {links.map((link, idx) => {
+                                    if (link.name === "Admin Panel" && !admin) return null;
+                                    return (
+                                        <li key={idx}>
+                                            <NavLink
+                                                to={link.to}
+                                                className={({ isActive }) =>
+                                                    isActive
+                                                        ? "block px-3 py-2 rounded text-sm text-yellow-500 bg-yellow-500/10"
+                                                        : "block px-3 py-2 rounded text-sm hover:bg-[#0b8260]/20 hover:text-[#0b8260]"
+                                                }
+                                                onClick={() => setShowDropdown(false)}
+                                            >
+                                                {link.name}
+                                            </NavLink>
+                                        </li>
+                                    );
+                                })}
+                                {!user && (
+                                    <>
+                                        <li>
+                                            <button
+                                                onClick={() => {
+                                                    handleLoginRef();
+                                                    setShowDropdown(false);
+                                                }}
+                                                className="w-full text-sm text-left px-3 py-2 rounded hover:bg-[#0b8260]/20 hover:text-[#0b8260]"
+                                            >
+                                                Log In
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <NavLink
+                                                onClick={() => {
+                                                    setShowDropdown(false);
+                                                }}
+                                                to={"/signup"}
+                                                className={({ isActive }) =>
+                                                    isActive
+                                                        ? "block px-3 py-2 rounded text-sm text-yellow-500 bg-yellow-500/10"
+                                                        : "block px-3 py-2 rounded text-sm hover:bg-[#0b8260]/20 hover:text-[#0b8260]"
+                                                }                                            >
+                                                Sign Up Now
+                                            </NavLink>
+                                        </li>
+                                    </>
+                                )}
+                            </ul>
+                        )}
                     </div>
+
+
 
                     {/* Logo */}
                     <Link to="#" className={`${!user && "flex-row-reverse md:flex-row"} font-bold text-xl flex  items-center gap-3`}>
