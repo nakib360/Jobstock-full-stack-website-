@@ -412,7 +412,7 @@ const ProfileSettings = () => {
                             animate={{ y: -10, scale: 1, opacity: 1 }}
                             exit={{ y: 10, scale: 0.8, opacity: 0 }}
                             transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                            className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl fixed z-50 w-96 bg-gray-100 shadow-xl p-6"
+                            className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl fixed z-50 w-[80vw] md:w-96 bg-gray-100 shadow-xl p-6"
                         >
                             {/* Header */}
                             <h2 className="text-xl font-bold text-red-500 mb-4 text-center">

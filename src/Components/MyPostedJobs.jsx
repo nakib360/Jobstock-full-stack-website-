@@ -26,9 +26,9 @@ const MyPostedJobs = () => {
 
 
   return (
-    <div className="p-10 relative">
+    <div className="p-5 md:p-10 relative">
       {/* Add Job Card */}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {
           remaining?.map(job => <JobCard job={job} hotUpdate={hotUpdate}/>)
         }

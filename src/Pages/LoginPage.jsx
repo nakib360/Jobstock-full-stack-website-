@@ -30,7 +30,7 @@ const LoginPage = () => {
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="relative">
+      <div className="relative min-w-[50vw]">
         <motion.div
           initial={{ y: 10, scale: 0.8, opacity: 0 }}
           animate={{ y: -10, scale: 1, opacity: 1 }}
@@ -51,7 +51,7 @@ const LoginPage = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="px-5 py-3 rounded-xl border border-white/30 bg-white/90 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 shadow-md pr-12"
+                className="px-5 py-3 w-full rounded-xl border border-white/30 bg-white/90 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 shadow-md pr-12"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -66,7 +66,7 @@ const LoginPage = () => {
               <input
                 type="password"
                 placeholder="Enter your password"
-                className="px-5 py-3 rounded-xl border border-white/30 bg-white/90 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 shadow-md pr-12"
+                className="px-5 py-3 w-full rounded-xl border border-white/30 bg-white/90 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 shadow-md pr-12"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
