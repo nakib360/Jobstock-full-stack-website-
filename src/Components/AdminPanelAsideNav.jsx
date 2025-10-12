@@ -21,7 +21,7 @@ const AdminPanelAsideNav = () => {
   }, []);
 
   return (
-    <div className="p-4 sm:p-6 bg-white h-full border-r border-gray-200 flex flex-col justify-start relative">
+    <div className="p-2 sm:p-6 bg-white h-full border-r border-gray-200 flex flex-col justify-start relative">
       <p className="text-xl font-bold text-gray-800 mb-6 hidden sm:block">
         Admin Panel
       </p>

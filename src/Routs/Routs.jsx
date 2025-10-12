@@ -15,11 +15,13 @@ import AppliedJobs from "../Components/AppliedJobs";
 import AllJobsTable from "../Components/AllJobsTable";
 import AllUsersTable from "../Components/AllUsersTable";
 import MyPostedJobs from "../Components/MyPostedJobs";
+import ErrorLayout from "../Layouts/ErrorLayout";
 
 const rout = createBrowserRouter([
     {
         path: "/",
         element: <MainLayout />,
+        errorElement: <ErrorLayout/>,
         children: [
             {
                 path: "/",

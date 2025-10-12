@@ -41,13 +41,13 @@ const AdminPanel = () => {
   }
 
   return (
-    <div className="grid grid-cols-12 ">
+    <div className="flex h-screen overflow-hidden ">
       {/* Sidebar */}
-      <div className="col-span-2">
+      <div className="overflow-y-auto">
         <AdminPanelAsideNav />
       </div>
       {/* Main content */}
-      <div className="col-span-10 p-4 md:p-8 overflow-auto">
+      <div className="flex-1 overflow-y-auto overflow-hidden p-4 md:p-8">
 
         <div className="flex items-center justify-around gap-6 mb-6">
           <div className="p-3 md:p-6 w-full bg-[#04343a] shadow rounded-lg">

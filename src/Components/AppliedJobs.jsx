@@ -33,7 +33,7 @@ const AppliedJobs = () => {
 
 
     return (
-        <div className="m-10">
+        <div className="m-4 md:m-10">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {
                     loading ? Array(3).fill().map((_, idx) => <SkeletonLoader key={idx} />)

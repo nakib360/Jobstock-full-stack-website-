@@ -42,7 +42,7 @@ const UserProfile = () => {
                   className="w-30 h-30 rounded-full"
                   src={
                     data?.avatar && data?.avatar.length > 0
-                      ? data.avatar
+                      ? data?.avatar
                       : "https://img.pikbest.com/png-images/20250228/user-profile-vector-flat-illustration-avatar-person-icon-gender-neutral-silhouette_11563975.png!sw800"
                   }
                   alt=""
@@ -66,7 +66,7 @@ const UserProfile = () => {
                 className="w-[120px] h-[120px] rounded-full object-cover"
                 src={
                   data?.avatar && data?.avatar.length > 0
-                    ? data.avatar
+                    ? data?.avatar
                     : "https://img.pikbest.com/png-images/20250228/user-profile-vector-flat-illustration-avatar-person-icon-gender-neutral-silhouette_11563975.png!sw800"
                 }
                 alt="user avatar"
@@ -92,53 +92,53 @@ const UserProfile = () => {
           ) : (
             <>
               {data?.displayName && (
-                <p className="text-2xl font-bold text-center md:text-left">{data.displayName}</p>
+                <p className="text-2xl font-bold text-center md:text-left">{data?.displayName}</p>
               )}
               {data?.bio && (
-                <p className="text-sm text-gray-500 text-center md:text-left">{data.bio}</p>
+                <p className="text-sm text-gray-500 text-center md:text-left">{data?.bio}</p>
               )}
 
               <div className="mt-8 space-y-3 text-gray-700">
                 {data?.email && (
                   <p className="flex items-center gap-2">
                     <HiOutlineMail className="text-lg flex-shrink-0" />{" "}
-                    <span className="text-sm break-all">{data.email}</span>
+                    <span className="text-sm break-all">{data?.email}</span>
                   </p>
                 )}
                 {data?.phoneNumber && (
                   <p className="flex items-center gap-2">
                     <MdOutlineLocalPhone className="text-lg flex-shrink-0" />{" "}
-                    <span className="text-sm">{data.phoneNumber}</span>
+                    <span className="text-sm">{data?.phoneNumber}</span>
                   </p>
                 )}
                 {data?.birthDate && (
                   <p className="flex items-center gap-2">
                     <MdOutlineDateRange className="text-lg flex-shrink-0" />{" "}
-                    <span className="text-sm">{data.birthDate}</span>
+                    <span className="text-sm">{data?.birthDate}</span>
                   </p>
                 )}
                 {data?.social?.website && (
                   <p className="flex items-center gap-2">
                     <TbWorld className="text-lg flex-shrink-0" />{" "}
-                    <span className="text-sm break-all">{data.social.website}</span>
+                    <span className="text-sm break-all">{data?.social.website}</span>
                   </p>
                 )}
                 {data?.social?.linkedin && (
                   <p className="flex items-center gap-2">
                     <IoLogoLinkedin className="text-lg flex-shrink-0" />{" "}
-                    <span className="text-sm break-all">{data.social.linkedin}</span>
+                    <span className="text-sm break-all">{data?.social.linkedin}</span>
                   </p>
                 )}
                 {data?.social?.twitter && (
                   <p className="flex items-center gap-2">
                     <FaXTwitter className="text-lg flex-shrink-0" />{" "}
-                    <span className="text-sm break-all">{data.social.twitter}</span>
+                    <span className="text-sm break-all">{data?.social.twitter}</span>
                   </p>
                 )}
                 {data?.social?.facebook && (
                   <p className="flex items-center gap-2">
                     <IoLogoFacebook className="text-lg flex-shrink-0" />{" "}
-                    <span className="text-sm break-all">{data.social.facebook}</span>
+                    <span className="text-sm break-all">{data?.social.facebook}</span>
                   </p>
                 )}
                 <p className="flex items-center gap-2">

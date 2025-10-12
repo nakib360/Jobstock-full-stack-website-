@@ -110,8 +110,8 @@ const SignupPage = () => {
           .catch(err => {
             console.error("Error creating user:", err);
           })
-      }).catch((err) => {
-        toast.error(err)
+      }).catch(() => {
+        toast.error("Something went wrong!")
       });
   };
 
