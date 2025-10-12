@@ -47,16 +47,16 @@ const AdminPanel = () => {
         <AdminPanelAsideNav />
       </div>
       {/* Main content */}
-      <div className="col-span-10 p-8 overflow-auto">
+      <div className="col-span-10 p-4 md:p-8 overflow-auto">
 
         <div className="flex items-center justify-around gap-6 mb-6">
-          <div className="p-6 w-full bg-[#04343a] shadow rounded-lg">
-            <h2 className="text-lg font-medium text-green-500">Total Users</h2>
+          <div className="p-3 md:p-6 w-full bg-[#04343a] shadow rounded-lg">
+            <h2 className="text-sm md:text-lg font-medium text-green-500">Total Users</h2>
             <p className="text-2xl font-bold mt-2 text-white">{userLength}</p>
           </div>
 
-          <div className="p-6 w-full bg-[#04343a] shadow rounded-lg">
-            <h2 className="text-lg font-medium text-green-500">Jobs Posted</h2>
+          <div className="p-3 md:p-6 w-full bg-[#04343a] shadow rounded-lg">
+            <h2 className="text-sm md:text-lg font-medium text-green-500">Jobs Posted</h2>
             <p className="text-2xl font-bold mt-2 text-white">{jobLength}</p>
           </div>
         </div>
