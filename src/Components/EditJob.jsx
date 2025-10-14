@@ -129,14 +129,14 @@ const EditJob = ({ job, closeModal, hotUpdate }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Form Data:", formData);
+        //console.log("Form Data:", formData);
 
-        axios.put(`http://localhost:3000/jobs/${job?._id}`, { formData })
+        axios.put(`${import.meta.env.VITE_API}/jobs/${job?._id}`, { formData }, {withCredentials: true})
             .then(res => {
-                console.log(res.data);
+                //console.log(res.data);
                 if (res.data?.modifiedCount > 0 || res.data?.acknowledged) {
                     toast.success("Job updated successfully!");
-                    hotUpdate();
+                    hotUpdate({...job, ...formData});
                     closeModal();
                 } else {
                     toast.error("No changes were made.");

@@ -98,9 +98,9 @@ const AddJobForm = ({ closeModal, hotUpdate }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        axios.put("http://localhost:3000/jobs", { formData })
+        axios.put(`${import.meta.env.VITE_API}/jobs`, { formData }, {withCredentials: true})
             .then(res => {
-                console.log(res);
+                //console.log(res);
                 if (res?.data?.insertedId?.length > 0) {
                     toast.success("You are successfully added a job.");
                     hotUpdate();

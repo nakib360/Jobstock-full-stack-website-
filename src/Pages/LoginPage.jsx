@@ -5,6 +5,7 @@ import { BiShowAlt, BiHide } from "react-icons/bi";
 import AuthContext from "../Authantiation/AuthContext";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 
 const LoginPage = () => {
   const { LogInUser, signInWithGoogle, setShowLoginModel } = useContext(AuthContext);
@@ -15,16 +16,26 @@ const LoginPage = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     LogInUser(email, password)
-      .then(() => {
+      .then((res) => {
         setShowLoginModel(false);
         toast.success("Logged in successfully!");
+        axios.post(`${import.meta.env.VITE_API}/jwt`, { user: res?.user?.email }, { withCredentials: true })
+          .then(res => {
+            //console.log(res);
+          })
       })
       .catch((err) => toast.error(err.message));
   };
 
   const handleGoogleLogin = () => {
     signInWithGoogle()
-      .then(() => setShowLoginModel(false))
+      .then((res) => {
+        setShowLoginModel(false)
+        axios.post(`${import.meta.env.VITE_API}/jwt`, { user: res?.user?.email }, { withCredentials: true })
+          .then(res => {
+            //console.log(res);
+          })
+      })
       .catch((err) => toast.error(err.message));
   };
 

@@ -12,7 +12,7 @@ const MyPostedJobs = () => {
   const { user } = useContext(AuthContext);
 
   const hotUpdate = () => {
-    axios.get("http://localhost:3000/jobs")
+    axios.get(`${import.meta.env.VITE_API}/jobs`, {withCredentials: true})
       .then(res => {
         setData(res.data);
       })

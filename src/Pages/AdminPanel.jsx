@@ -14,14 +14,14 @@ const AdminPanel = () => {
   const [jobLength, setJobLength] = useState(0);
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/jobs`)
+    axios.get(`${import.meta.env.VITE_API}/jobs`, {withCredentials: true})
       .then((res) => {
-        console.log(res.data)
+        //console.log(res.data)
         setJobs(res.data);
         setLoading(false);
       })
 
-    axios.get(`http://localhost:3000/users`)
+    axios.get(`${import.meta.env.VITE_API}/users`, {withCredentials: true})
       .then(res => {
         setUsers(res.data)
       })

@@ -10,11 +10,10 @@ const DetailsCard = ({ data }) => {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/users?email=${user?.email}`)
-      .then(res => res.json())
+    axios.get(`${import.meta.env.VITE_API}/users?email=${user?.email}`, {withCredentials: true})
       .then(data => {
-        setUserData(data[0]);
-        console.log(data)
+        setUserData(data.data[0]);
+        //console.log(data)
       })
   }, [user?.email]);
 
@@ -23,19 +22,19 @@ const DetailsCard = ({ data }) => {
   };
 
   const handleApply = (userId) => {
-    axios.post(`http://localhost:3000/jobs/${data?._id}`, { userId })
+    axios.post(`${import.meta.env.VITE_API}/jobs/${data?._id}`, { userId }, {withCredentials: true})
       .then(res => {
-        console.log(res)
+        //console.log(res)
         toast.success(`${userData?.displayName} is successfully applied.`)
       })
 
-    axios.post(`http://localhost:3000/users/${userData?._id}`, { jobId: data._id })
+    axios.post(`${import.meta.env.VITE_API}/users/${userData?._id}`, { jobId: data._id }, {withCredentials: true})
       .then(res => {
-        console.log(res)
+        //console.log(res)
         toast.success(`${data?.jobName} is successfully applied.`)
       })
 
-    // console.log("UserId :", userId, ",", "jobid :", data?._id);
+    // //console.log("UserId :", userId, ",", "jobid :", data?._id);
   }
 
   return (

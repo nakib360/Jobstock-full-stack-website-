@@ -16,7 +16,7 @@ const AllJobsTable = () => {
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:3000/jobs/${id}`)
+      .delete(`${import.meta.env.VITE_API}/jobs/${id}`, { withCredentials: true })
       .then((res) => {
         if (res?.data?.deletedCount > 0) {
           toast.success("Job successfully deleted");
@@ -49,8 +49,18 @@ const AllJobsTable = () => {
   };
 
   const hotUpdate = (updatedJob) => {
-    setJobs(jobs.map((job) => (job._id === updatedJob._id ? updatedJob : job)));
+    if (!updatedJob?._id) {
+      console.error("Updated job missing _id:", updatedJob);
+      return;
+    }
+
+    setJobs((prevJobs) =>
+      prevJobs.map((job) =>
+        job._id === updatedJob._id ? updatedJob : job
+      )
+    );
   };
+
 
   return (
     <div className="space-y-6">

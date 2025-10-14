@@ -62,8 +62,14 @@ const SignupPage = () => {
 
     signUpUser(values?.email, values?.password)
       .then((result) => {
-        console.log(result);
-        axios.post("http://localhost:3000/users", {
+        const user = result?.user?.email;
+
+        axios.post(`${import.meta.env.VITE_API}/jwt`, { user }, { withCredentials: true })
+          .then(res => {
+            //console.log(res);
+          })
+
+        axios.post(`${import.meta.env.VITE_API}/users`, {
           displayName: values?.firstName && values?.lastName ? values?.firstName + " " + values?.lastName : "New User",
           email: values?.email.toLowerCase() ?? null,
           phoneNumber: values?.phone ?? null,
@@ -101,9 +107,9 @@ const SignupPage = () => {
             minute: "2-digit",
             hour12: true
           }),
-        })
+        }, { withCredentials: true })
           .then(res => {
-            console.log("User created:", res.data);
+            //console.log("User created:", res.data);
             navigate("/");
             window.scrollTo(0, 0);
           })
@@ -138,9 +144,15 @@ const SignupPage = () => {
     signInWithGoogle()
       .then((res) => {
         const user = res?.user;
+
+        axios.post(`${import.meta.env.VITE_API}/jwt`, { user }, { withCredentials: true })
+          .then(res => {
+            //console.log(res);
+          })
+
         navigate("/");
         window.scrollTo(0, 0);
-        axios.post("http://localhost:3000/users", {
+        axios.post(`${import.meta.env.VITE_API}/users`, {
           displayName: user?.displayName ?? "New User",
           email: user?.email ?? null,
           phoneNumber: user?.phone ?? null,
@@ -178,9 +190,9 @@ const SignupPage = () => {
             minute: "2-digit",
             hour12: true
           }),
-        })
+        }, { withCredentials: true })
           .then((res) => {
-            console.log(res);
+            //console.log(res);
           })
       })
       .catch(() => {
@@ -249,13 +261,12 @@ const SignupPage = () => {
                     className="px-5 py-3 rounded-xl border border-white/30 bg-white/90 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 shadow-md w-full pr-12"
                     required={field.name !== "phone"}
                   />
-                  <button
-                    type="button"
+                  <div
                     onClick={() => setPassShow(!passShow)}
                     className="absolute inset-y-0 right-3 flex items-center text-black"
                   >
                     {passShow ? <BiShowAlt className="text-2xl" /> : <BiHide className="text-2xl" />}
-                  </button>
+                  </div>
                 </div>
               ) : field.name === "confirmPassword" ? (
                 <div className="relative w-full">
@@ -267,12 +278,12 @@ const SignupPage = () => {
                     className="px-5 py-3 rounded-xl border border-white/30 bg-white/90 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 shadow-md w-full pr-12"
                     required={field.name !== "phone"}
                   />
-                  <button
+                  <div
                     onClick={() => setConfirmPassShow(!confirmPassShow)}
                     className="absolute inset-y-0 right-3 flex items-center text-black"
                   >
                     {confirmPassShow ? <BiShowAlt className="text-2xl" /> : <BiHide className="text-2xl" />}
-                  </button>
+                  </div>
                 </div>
               ) : (
                 <input

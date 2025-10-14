@@ -8,6 +8,7 @@ import { IoLogoLinkedin, IoLogoFacebook } from "react-icons/io5";
 import { FaXTwitter } from "react-icons/fa6";
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css';
+import axios from "axios";
 
 const UserProfile = () => {
   const { user } = useContext(AuthContext);
@@ -15,10 +16,10 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/users?email=${user?.email}`)
-      .then(res => res.json())
-      .then(data => {
-        setData(data[0]);
+    axios
+      .get(`${import.meta.env.VITE_API}/users?email=${user?.email}`, {withCredentials: true})
+      .then((res) => {
+        setData(res.data[0]);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -27,30 +28,6 @@ const UserProfile = () => {
   return (
     <div className="p-4 sm:p-8 relative">
       {/* Profile Avatar */}
-      {/* <div className="absolute bg-white rounded-full border-4 border-white left-15">
-          <div className={`${data?.admin ? "border-[#ffcc00]" : "border-[#0b8260]"} z-10 border-3 p-1 rounded-full w-33 relative`}>
-            {loading ? (
-              <Skeleton className="p-10" circle width={118} height={118} />
-            ) : (
-              <>
-                {data?.admin && (
-                  <p className="absolute right-0 bg-[#ffcc00] text-black font-semibold px-3 py-1 rounded-full text-[8px] shadow-md uppercase tracking-wide">
-                    Admin
-                  </p>
-                )}
-                <img
-                  className="w-30 h-30 rounded-full"
-                  src={
-                    data?.avatar && data?.avatar.length > 0
-                      ? data?.avatar
-                      : "https://img.pikbest.com/png-images/20250228/user-profile-vector-flat-illustration-avatar-person-icon-gender-neutral-silhouette_11563975.png!sw800"
-                  }
-                  alt=""
-                />
-              </>
-            )}
-          </div>
-        </div> */}
       <div className="absolute bg-white rounded-full border-4 border-white md:left-15 left-1/2 -translate-x-1/2 md:-translate-x-0 flex flex-col items-center md:items-start">
         <div className={`relative border-4 ${data?.admin ? "border-[#ffcc00]" : "border-[#0b8260]"} rounded-full p-1`}>
           {loading ? (
@@ -165,16 +142,16 @@ const UserProfile = () => {
             <div className="bg-white shadow-sm hover:shadow-md transition p-4 rounded-xl flex flex-wrap gap-3">
               {loading
                 ? Array(5)
-                    .fill(0)
-                    .map((_, idx) => <Skeleton key={idx} width={80} height={25} />)
+                  .fill(0)
+                  .map((_, idx) => <Skeleton key={idx} width={80} height={25} />)
                 : data?.skills?.map((skill, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-gray-700 text-white rounded-full px-4 py-2 text-xs font-medium cursor-default hover:bg-emerald-600 transition-colors"
-                    >
-                      {skill}
-                    </div>
-                  ))}
+                  <div
+                    key={idx}
+                    className="bg-gray-700 text-white rounded-full px-4 py-2 text-xs font-medium cursor-default hover:bg-emerald-600 transition-colors"
+                  >
+                    {skill}
+                  </div>
+                ))}
             </div>
           </div>
 
@@ -184,20 +161,20 @@ const UserProfile = () => {
             <div className="space-y-4">
               {loading
                 ? Array(2)
-                    .fill(0)
-                    .map((_, idx) => <Skeleton key={idx} height={80} />)
+                  .fill(0)
+                  .map((_, idx) => <Skeleton key={idx} height={80} />)
                 : data?.education?.map((edu, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-white shadow-sm hover:shadow-md transition p-4 rounded-xl cursor-default"
-                    >
-                      <p className="text-lg font-bold text-gray-800">{edu.degree}</p>
-                      <p className="text-sm text-gray-600">{edu.institution}</p>
-                      <p className="text-xs text-gray-500">
-                        {edu.startYear} - {edu.endYear} • {edu.result}
-                      </p>
-                    </div>
-                  ))}
+                  <div
+                    key={idx}
+                    className="bg-white shadow-sm hover:shadow-md transition p-4 rounded-xl cursor-default"
+                  >
+                    <p className="text-lg font-bold text-gray-800">{edu.degree}</p>
+                    <p className="text-sm text-gray-600">{edu.institution}</p>
+                    <p className="text-xs text-gray-500">
+                      {edu.startYear} - {edu.endYear} • {edu.result}
+                    </p>
+                  </div>
+                ))}
             </div>
           </div>
         </div>

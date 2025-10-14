@@ -11,9 +11,9 @@ const JobCard = ({ job, hotUpdate }) => {
     const [openForm, setOpenForm] = useState(false)
 
     const handleDelete = () => {
-        axios.delete(`http://localhost:3000/jobs/${job?._id}`)
+        axios.delete(`${import.meta.env.VITE_API}/jobs/${job?._id}`, {withCredentials: true})
             .then((res) => {
-                console.log(res)
+                //console.log(res)
                 if (res?.data?.deletedCount > 0) {
                     toast.success("Successfully delated job.")
                     hotUpdate();

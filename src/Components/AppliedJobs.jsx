@@ -11,17 +11,16 @@ const AppliedJobs = () => {
     const { user } = useContext(AuthContext)
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/jobs`)
+        axios.get(`${import.meta.env.VITE_API}/jobs`, {withCredentials: true})
             .then((res) => {
-                console.log(res.data)
+                //console.log(res.data)
                 setJobs(res.data);
                 setLoading(false);
             })
 
-        fetch(`http://localhost:3000/users?email=${user?.email}`)
-            .then(res => res.json())
+        axios.get(`${import.meta.env.VITE_API}/users?email=${user?.email}`, {withCredentials: true})
             .then(data => {
-                setMyAppliedJobs(data[0]?.myAppliedJobs)
+                setMyAppliedJobs(data.data[0]?.myAppliedJobs)
             })
     }, [user?.email])
 

@@ -6,7 +6,11 @@ import toast from "react-hot-toast";
 
 const AllUsersTable = () => {
   const loadedData = useLoaderData();
-  const [remainingUser, setRemainingUser] = useState(loadedData);
+  
+  const [remainingUser, setRemainingUser] = useState(
+    Array.isArray(loadedData) ? loadedData : loadedData?.users || []
+  );
+
   const [openConfirmSubmit, setConfirmSubmit] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
 
@@ -18,11 +22,13 @@ const AllUsersTable = () => {
   const confirmDelete = () => {
     if (selectedUserId) {
       axios
-        .delete(`http://localhost:3000/users/${selectedUserId}`)
+        .delete(`${import.meta.env.VITE_API}/users/${selectedUserId}`, { withCredentials: true })
         .then((res) => {
           if (res?.data?.deletedCount > 0) {
             toast.success("User successfully deleted!");
-            setRemainingUser(remainingUser.filter((user) => user?._id !== selectedUserId));
+            setRemainingUser(
+              remainingUser.filter((user) => user?._id !== selectedUserId)
+            );
           } else {
             toast.error("Something went wrong!");
           }
@@ -55,58 +61,63 @@ const AllUsersTable = () => {
               </tr>
             </thead>
             <tbody>
-              {remainingUser.map((user) => (
-                <tr key={user._id}>
-                  <td className="border border-white/50 px-4 py-2">{user?.displayName}</td>
-                  <td className="border border-white/50 px-4 py-2">{user?.email}</td>
-                  <td className="border border-white/50 px-4 py-2">
-                    {user?.password || "Logged in by Google"}
-                  </td>
-                  <td className="border border-white/50 px-4 py-2">{user?.admin ? "Admin" : "User"}</td>
-                  <td className="border border-white/50 px-4 py-2 space-x-2">
-                    <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleConfirmModal(user?._id)}
-                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {Array.isArray(remainingUser) &&
+                remainingUser.map((user) => (
+                  <tr key={user._id}>
+                    <td className="border border-white/50 px-4 py-2">{user?.displayName}</td>
+                    <td className="border border-white/50 px-4 py-2">{user?.email}</td>
+                    <td className="border border-white/50 px-4 py-2">
+                      {user?.password || "Logged in by Google"}
+                    </td>
+                    <td className="border border-white/50 px-4 py-2">
+                      {user?.admin ? "Admin" : "User"}
+                    </td>
+                    <td className="border border-white/50 px-4 py-2 space-x-2">
+                      <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleConfirmModal(user?._id)}
+                        className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
 
         {/* Mobile Cards */}
         <div className="md:hidden space-y-4">
-          {remainingUser.map((user) => (
-            <div key={user._id} className="bg-white/10 p-4 rounded-lg shadow">
-              <h3 className="text-lg font-semibold text-white mb-2">{user?.displayName}</h3>
-              <p className="text-sm text-gray-200">
-                <span className="font-semibold">Email:</span> {user?.email}
-              </p>
-              <p className="text-sm text-gray-200">
-                <span className="font-semibold">Password:</span> {user?.password || "Logged in by Google"}
-              </p>
-              <p className="text-sm text-gray-200">
-                <span className="font-semibold">Role:</span> {user?.admin ? "Admin" : "User"}
-              </p>
-              <div className="mt-2 flex gap-2">
-                <button className="flex-1 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleConfirmModal(user?._id)}
-                  className="flex-1 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                >
-                  Delete
-                </button>
+          {Array.isArray(remainingUser) &&
+            remainingUser.map((user) => (
+              <div key={user._id} className="bg-white/10 p-4 rounded-lg shadow">
+                <h3 className="text-lg font-semibold text-white mb-2">{user?.displayName}</h3>
+                <p className="text-sm text-gray-200">
+                  <span className="font-semibold">Email:</span> {user?.email}
+                </p>
+                <p className="text-sm text-gray-200">
+                  <span className="font-semibold">Password:</span>{" "}
+                  {user?.password || "Logged in by Google"}
+                </p>
+                <p className="text-sm text-gray-200">
+                  <span className="font-semibold">Role:</span> {user?.admin ? "Admin" : "User"}
+                </p>
+                <div className="mt-2 flex gap-2">
+                  <button className="flex-1 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleConfirmModal(user?._id)}
+                    className="flex-1 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
 

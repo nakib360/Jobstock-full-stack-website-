@@ -7,6 +7,7 @@ import { useState, useEffect, useContext, useRef } from "react";
 import AuthContext from "../Authantiation/AuthContext";
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from 'react-tooltip';
+import axios from "axios";
 
 const Navber = () => {
     const [show, setShow] = useState(true);
@@ -19,11 +20,10 @@ const Navber = () => {
     const [showDropdown, setShowDropdown] = useState(false);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/users?email=${user?.email}`)
-            .then(res => res.json())
+        axios.get(`${import.meta.env.VITE_API}/users?email=${user?.email}`, {withCredentials: true})
             .then(data => {
-                setData(data[0]);
-                console.log(data[0])
+                setData(data.data[0]);
+                //console.log(data[0])
             })
     }, [user?.email])
 

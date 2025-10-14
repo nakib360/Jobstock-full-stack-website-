@@ -15,7 +15,7 @@ const AuthProvider = ({ children }) => {
     const [showLoginModel, setShowLoginModel] = useState(false);
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/users?email=${user?.email}`)
+        axios.get(`${import.meta.env.VITE_API}/users?email=${user?.email}`, {withCredentials: true})
             .then((res) => {
                 if (res.data[0]?.admin === true) {
                     setAdmin(true);
@@ -50,7 +50,7 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            console.log('auth state changed', currentUser);
+            //console.log('auth state changed', currentUser);
             setUser(currentUser);
             setLoading(false);
         });

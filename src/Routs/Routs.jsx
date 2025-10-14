@@ -16,12 +16,14 @@ import AllJobsTable from "../Components/AllJobsTable";
 import AllUsersTable from "../Components/AllUsersTable";
 import MyPostedJobs from "../Components/MyPostedJobs";
 import ErrorLayout from "../Layouts/ErrorLayout";
+import SignInSecure from "./SignInSecure";
+import axios from "axios";
 
 const rout = createBrowserRouter([
     {
         path: "/",
         element: <MainLayout />,
-        errorElement: <ErrorLayout/>,
+        errorElement: <ErrorLayout />,
         children: [
             {
                 path: "/",
@@ -35,10 +37,10 @@ const rout = createBrowserRouter([
                 path: "/jobDetails/:id",
                 element: (
                     <SecureRout>
-                        <JobDetails/>
+                        <JobDetails />
                     </SecureRout>
                 ),
-                loader: ({ params }) => fetch(`http://localhost:3000/jobs/${params.id}`)
+                loader: ({ params }) => fetch(`${import.meta.env.VITE_API}/jobs/${params.id}`)
             },
             {
                 path: "/blog",
@@ -62,11 +64,11 @@ const rout = createBrowserRouter([
                     },
                     {
                         path: "postedJobs",
-                        element: <MyPostedJobs/>
+                        element: <MyPostedJobs />
                     },
                     {
                         path: "appliedJobs",
-                        element: <AppliedJobs/>
+                        element: <AppliedJobs />
                     },
                     {
                         path: "settings",
@@ -76,7 +78,11 @@ const rout = createBrowserRouter([
             },
             {
                 path: "/signup",
-                element: <SignupPage />
+                element: (
+                    <SignInSecure>
+                        <SignupPage />
+                    </SignInSecure>
+                )
             },
             {
                 path: "/admin-panel",
@@ -88,17 +94,17 @@ const rout = createBrowserRouter([
                 children: [
                     {
                         index: true,
-                        element: <Navigate to={"allJobs"} replace/>
+                        element: <Navigate to={"allJobs"} replace />
                     },
                     {
                         path: "allJobs",
-                        element: <AllJobsTable/>,
-                        loader: () => fetch("http://localhost:3000/jobs")
+                        element: <AllJobsTable />,
+                        loader: () => axios.get(`${import.meta.env.VITE_API}/jobs`, {withCredentials: true}).then(res => res.data)
                     },
                     {
                         path: "allUsers",
-                        element: <AllUsersTable/>,
-                        loader: () => fetch("http://localhost:3000/users")
+                        element: <AllUsersTable />,
+                        loader: () => axios.get(`${import.meta.env.VITE_API}/users`, {withCredentials: true}).then(res => res.data)
                     }
                 ]
             }

@@ -31,10 +31,9 @@ const ProfileSettings = () => {
     const [preview, setPreview] = useState(data?.avatar);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/users?email=${user?.email}`)
-            .then((res) => res.json())
+        axios.get(`${import.meta.env.VITE_API}/users?email=${user?.email}`, {withCredentials: true})
             .then((data) => {
-                setData(data[0]);
+                setData(data.data[0]);
                 setLoading(false);
             })
             .catch(() => setLoading(false));
@@ -86,7 +85,7 @@ const ProfileSettings = () => {
         };
         setData(updated);
         axios
-            .put(`http://localhost:3000/users/${updated._id}`, updated)
+            .put(`${import.meta.env.VITE_API}/users/${updated._id}`, updated, {withCredentials: true})
             .then((res) => {
                 res?.status === 200
                     ? toast.success("Profile updated successfully!")
