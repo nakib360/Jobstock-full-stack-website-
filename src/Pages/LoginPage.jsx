@@ -35,6 +35,51 @@ const LoginPage = () => {
           .then(res => {
             //console.log(res);
           })
+
+        const user = res?.user;
+
+        axios.post(`${import.meta.env.VITE_API}/users`, {
+          displayName: user?.displayName ?? "New User",
+          email: user?.email ?? null,
+          phoneNumber: user?.phone ?? null,
+          gender: user?.gender ?? null,
+          password: user?.password ?? null,
+          birthDate: user?.date ?? null,
+          bio: "",
+          avatar: user?.photoURL ?? "",
+          social: {
+            website: "",
+            linkedin: "",
+            twitter: "",
+            facebook: ""
+          },
+          privacy: {
+            profilePublic: true,
+            showEmail: false,
+            showPhone: false
+          },
+          skills: [],
+          education: [],
+          createdAt: new Date().toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+          }),
+          updatedAt: new Date().toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+          }),
+        }, { withCredentials: true })
+          .then((res) => {
+            //console.log(res);
+          })
       })
       .catch((err) => toast.error(err.message));
   };
