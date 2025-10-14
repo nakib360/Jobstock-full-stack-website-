@@ -158,7 +158,8 @@ const UserProfile = () => {
           {/* Education */}
           <div>
             <p className="text-2xl font-semibold mb-4">Education</p>
-            <div className="space-y-4">
+            <div className="bg-white shadow-sm hover:shadow-md transition p-4 rounded-xl flex flex-wrap gap-3">
+            {/* <div className="space-y-4"> */}
               {loading
                 ? Array(2)
                   .fill(0)
