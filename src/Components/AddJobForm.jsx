@@ -4,7 +4,7 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
 const AddJobForm = ({ closeModal, hotUpdate }) => {
-  const { user } = useContext(AuthContext);
+  const { user, signOutUser, setShowLoginModel } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     jobType: "",
     jobName: "",
@@ -92,7 +92,14 @@ const AddJobForm = ({ closeModal, hotUpdate }) => {
           toast.error("Something went wrong.");
         }
         closeModal();
-      });
+      })
+      .catch(error => {
+        if (error.response?.status === 401) {
+          toast.error("Session expired! Please login again.");
+          signOutUser();
+          setShowLoginModel(true);
+        }
+      })
   };
 
   return (

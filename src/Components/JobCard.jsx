@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import toast from "react-hot-toast";
 import EditJob from "./EditJob";
+import AuthContext from "../Authantiation/AuthContext";
 
 const JobCard = ({ job, hotUpdate }) => {
     const location = useLocation();
     const [openConfirmSubmit, setConfirmSubmit] = useState(false);
     const [openForm, setOpenForm] = useState(false)
+    const { signOutUser, setShowLoginModel } = useContext(AuthContext);
 
     const handleDelete = () => {
         axios.delete(`${import.meta.env.VITE_API}/jobs/${job?._id}`, {withCredentials: true})
@@ -21,6 +23,13 @@ const JobCard = ({ job, hotUpdate }) => {
                     toast.error("Something went wrong.")
                 }
             })
+            .catch(error => {
+                if (error.response?.status === 401) {
+                  toast.error("Session expired! Please login again.");
+                  signOutUser();
+                  setShowLoginModel(true);
+                }
+              })
     }
 
     return (

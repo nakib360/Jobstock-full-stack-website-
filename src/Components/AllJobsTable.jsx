@@ -1,9 +1,10 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useLoaderData } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import EditJob from "./EditJob";
+import AuthContext from "../Authantiation/AuthContext";
 
 const AllJobsTable = () => {
   const loadedData = useLoaderData();
@@ -13,6 +14,9 @@ const AllJobsTable = () => {
 
   const [openEditForm, setOpenEditForm] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
+
+  const { signOutUser, setShowLoginModel } = useContext(AuthContext);
+
 
   const handleDelete = (id) => {
     axios
@@ -25,8 +29,13 @@ const AllJobsTable = () => {
           toast.error("Operation failed. Try again.");
         }
       })
-      .catch(() => {
+      .catch((err) => {
         toast.error("Operation failed. Try again.");
+        if (err.response?.status === 401) {
+          toast.error("Session expired! Please login again.");
+          signOutUser();
+          setShowLoginModel(true);
+      }
       });
   };
 

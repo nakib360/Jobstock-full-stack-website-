@@ -7,7 +7,7 @@ import { FaCamera } from "react-icons/fa";
 import axios from "axios";
 
 const ProfileSettings = () => {
-    const { user, setLoading } = useContext(AuthContext);
+    const { user, setLoading, signOutUser, setShowLoginModel } = useContext(AuthContext);
     const [openConfirmSubmit, setConfirmSubmit] = useState(false);
     const fileInputRef = useRef(null);
 
@@ -31,13 +31,20 @@ const ProfileSettings = () => {
     const [preview, setPreview] = useState(data?.avatar);
 
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_API}/users?email=${user?.email}`, {withCredentials: true})
+        axios.get(`${import.meta.env.VITE_API}/users?email=${user?.email}`, { withCredentials: true })
             .then((data) => {
                 setData(data.data[0]);
                 setLoading(false);
             })
-            .catch(() => setLoading(false));
-    }, [user?.email, setLoading]);
+            .catch((err) => {
+                setLoading(false)
+                if (err.response?.status === 401) {
+                    toast.error("Session expired! Please login again.");
+                    signOutUser();
+                    setShowLoginModel(true);
+                }
+            });
+    }, [user?.email, setLoading, signOutUser, setShowLoginModel]);
 
     const handleChange = (field, value) => setData({ ...data, [field]: value });
     const handlePrivacyToggle = (field) =>
@@ -85,13 +92,20 @@ const ProfileSettings = () => {
         };
         setData(updated);
         axios
-            .put(`${import.meta.env.VITE_API}/users/${updated._id}`, updated, {withCredentials: true})
+            .put(`${import.meta.env.VITE_API}/users/${updated._id}`, updated, { withCredentials: true })
             .then((res) => {
                 res?.status === 200
                     ? toast.success("Profile updated successfully!")
                     : toast.error("Please try again!");
             })
-            .catch((err) => toast.error(err.message || "Update failed!"));
+            .catch((err) => {
+                toast.error(err.message || "Update failed!")
+                if (err.response?.status === 401) {
+                    toast.error("Session expired! Please login again.");
+                    signOutUser();
+                    setShowLoginModel(true);
+                }
+            });
     };
 
     const handleDelete = () => {
@@ -171,11 +185,10 @@ const ProfileSettings = () => {
                         <div key={key}>
                             <p className="text-sm px-1 py-1 text-gray-500">{label}</p>
                             <input
-                                className={`w-full border-2 rounded-xl p-2 ${
-                                    disabled
+                                className={`w-full border-2 rounded-xl p-2 ${disabled
                                         ? "bg-gray-100 text-gray-600 cursor-not-allowed"
                                         : "focus:outline-none focus:border-emerald-400 border-gray-400"
-                                }`}
+                                    }`}
                                 type={key === "email" ? "email" : "text"}
                                 value={data?.[key]}
                                 disabled={disabled}

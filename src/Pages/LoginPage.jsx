@@ -8,7 +8,7 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 
 const LoginPage = () => {
-  const { LogInUser, signInWithGoogle, setShowLoginModel } = useContext(AuthContext);
+  const { LogInUser, signInWithGoogle, setShowLoginModel, signOutUser } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
@@ -81,7 +81,14 @@ const LoginPage = () => {
             //console.log(res);
           })
       })
-      .catch((err) => toast.error(err.message));
+      .catch((err) => {
+        toast.error(err.message)
+        if (err.response?.status === 401) {
+          toast.error("Session expired! Please login again.");
+          signOutUser();
+          setShowLoginModel(true);
+        }
+      });
   };
 
   return (

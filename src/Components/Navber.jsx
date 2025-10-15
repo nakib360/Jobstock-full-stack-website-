@@ -8,6 +8,7 @@ import AuthContext from "../Authantiation/AuthContext";
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from 'react-tooltip';
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const Navber = () => {
     const [show, setShow] = useState(true);
@@ -20,12 +21,19 @@ const Navber = () => {
     const [showDropdown, setShowDropdown] = useState(false);
 
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_API}/users?email=${user?.email}`, {withCredentials: true})
+        axios.get(`${import.meta.env.VITE_API}/users?email=${user?.email}`, { withCredentials: true })
             .then(data => {
                 setData(data.data[0]);
                 //console.log(data[0])
             })
-    }, [user?.email])
+            .catch(error => {
+                if (error.response?.status === 401) {
+                    toast.error("Session expired! Please login again.");
+                    signOutUser();
+                    setShowLoginModel(true);
+                }
+            })
+    }, [user?.email, signOutUser, setShowLoginModel]);
 
     useEffect(() => {
         const handleScroll = () => {

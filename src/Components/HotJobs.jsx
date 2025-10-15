@@ -1,11 +1,13 @@
 import axios from "axios";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import JobCard from "./JobCard";
 import SkeletonLoader from "./SkeletonLoader";
 import { useLocation } from "react-router";
 import { FaSearch } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import "../index.css"
+import AuthContext from "../Authantiation/AuthContext";
+import toast from "react-hot-toast";
 
 const HotJobs = ({ limit }) => {
     const [data, setData] = useState([]);
@@ -18,14 +20,22 @@ const HotJobs = ({ limit }) => {
         { option: "Ascending of Salary", value: "ascending" },
         { option: "Descending of Salary", value: "descending" }
     ]
+    const { signOutUser, setShowLoginModel } = useContext(AuthContext);
 
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_API}/jobs`, {withCredentials: true})
+        axios.get(`${import.meta.env.VITE_API}/jobs`, { withCredentials: true })
             .then((res) => {
                 setData(res.data);
                 setLoading(false);
             })
-    }, []);
+            .catch(error => {
+                if (error.response?.status === 401) {
+                    toast.error("Session expired! Please login again.");
+                    signOutUser();
+                    setShowLoginModel(true);
+                }
+            })
+    }, [signOutUser, setShowLoginModel]);
 
     const finalData = useMemo(() => {
         let filtered = data;

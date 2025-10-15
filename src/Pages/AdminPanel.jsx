@@ -3,6 +3,7 @@ import AuthContext from "../Authantiation/AuthContext";
 import AdminPanelAsideNav from "../Components/AdminPanelAsideNav";
 import axios from "axios";
 import { Outlet } from "react-router";
+import toast from "react-hot-toast";
 
 const AdminPanel = () => {
   const [jobs, setJobs] = useState([]);
@@ -12,20 +13,35 @@ const AdminPanel = () => {
   const { admin } = useContext(AuthContext);
   const [userLength, setUserLength] = useState(0);
   const [jobLength, setJobLength] = useState(0);
+  const { signOutUser, setShowLoginModel } = useContext(AuthContext);
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API}/jobs`, {withCredentials: true})
+    axios.get(`${import.meta.env.VITE_API}/jobs`, { withCredentials: true })
       .then((res) => {
         //console.log(res.data)
         setJobs(res.data);
         setLoading(false);
       })
+      .catch(error => {
+        if (error.response?.status === 401) {
+          toast.error("Session expired! Please login again.");
+          signOutUser();
+          setShowLoginModel(true);
+        }
+      })
 
-    axios.get(`${import.meta.env.VITE_API}/users`, {withCredentials: true})
+    axios.get(`${import.meta.env.VITE_API}/users`, { withCredentials: true })
       .then(res => {
         setUsers(res.data)
       })
-  }, [user?.email])
+      .catch(error => {
+        if (error.response?.status === 401) {
+          toast.error("Session expired! Please login again.");
+          signOutUser();
+          setShowLoginModel(true);
+        }
+      })
+  }, [user?.email, signOutUser, setShowLoginModel])
 
   useEffect(() => {
     setUserLength(users?.length);

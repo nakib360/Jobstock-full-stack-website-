@@ -9,21 +9,29 @@ import { FaXTwitter } from "react-icons/fa6";
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css';
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const UserProfile = () => {
-  const { user } = useContext(AuthContext);
+  const { user, signOutUser, setShowLoginModel } = useContext(AuthContext);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_API}/users?email=${user?.email}`, {withCredentials: true})
+      .get(`${import.meta.env.VITE_API}/users?email=${user?.email}`, { withCredentials: true })
       .then((res) => {
         setData(res.data[0]);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
-  }, [user?.email]);
+      .catch((error) => {
+        setLoading(false)
+        if (error.response?.status === 401) {
+          toast.error("Session expired! Please login again.");
+          signOutUser();
+          setShowLoginModel(true);
+        }
+      });
+  }, [user?.email, setShowLoginModel, signOutUser]);
 
   return (
     <div className="p-4 sm:p-8 relative">
@@ -31,7 +39,7 @@ const UserProfile = () => {
       <div className="absolute bg-white rounded-full border-4 border-white md:left-15 left-1/2 -translate-x-1/2 md:-translate-x-0 flex flex-col items-center md:items-start">
         <div className={`relative border-4 ${data?.admin ? "border-[#ffcc00]" : "border-[#0b8260]"} rounded-full p-1`}>
           {loading ? (
-            <Skeleton circle width={118} height={118} />
+            <Skeleton circle width={120} height={120} />
           ) : (
             <>
               {data?.admin && (
@@ -159,7 +167,7 @@ const UserProfile = () => {
           <div>
             <p className="text-2xl font-semibold mb-4">Education</p>
             <div className="bg-white shadow-sm hover:shadow-md transition p-4 rounded-xl flex flex-wrap gap-3">
-            {/* <div className="space-y-4"> */}
+              {/* <div className="space-y-4"> */}
               {loading
                 ? Array(2)
                   .fill(0)

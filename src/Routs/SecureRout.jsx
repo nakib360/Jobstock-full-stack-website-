@@ -1,12 +1,17 @@
 import { useContext, useEffect } from "react";
 import AuthContext from "../Authantiation/AuthContext";
 import { Navigate } from "react-router";
+import { PropagateLoader } from "react-spinners";
 
 const SecureRout = ({ children }) => {
     const { user, loading, setShowLoginModel } = useContext(AuthContext);
 
     if (loading) {
-        return <p>Loading.........</p>
+        return (
+            <div className="flex justify-center items-center p-40">
+                <PropagateLoader color="#0b8260" />
+            </div>
+        )
     }
     
     useEffect(() => {

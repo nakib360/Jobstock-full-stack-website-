@@ -5,16 +5,24 @@ import AddJobForm from "./AddJobForm";
 import axios from "axios";
 import JobCard from "./JobCard";
 import AuthContext from "../Authantiation/AuthContext";
+import toast from "react-hot-toast";
 
 const MyPostedJobs = () => {
   const [openForm, setOpenForm] = useState(false);
   const [data, setData] = useState([]);
-  const { user } = useContext(AuthContext);
+  const { user, signOutUser, setShowLoginModel } = useContext(AuthContext);
 
   const hotUpdate = () => {
     axios.get(`${import.meta.env.VITE_API}/jobs`, {withCredentials: true})
       .then(res => {
         setData(res.data);
+      })
+      .catch(error => {
+        if (error.response?.status === 401) {
+          toast.error("Session expired! Please login again.");
+          signOutUser();
+          setShowLoginModel(true);
+        }
       })
   }
 

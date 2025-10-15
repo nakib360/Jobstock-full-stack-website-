@@ -99,7 +99,7 @@ const rout = createBrowserRouter([
                     {
                         path: "allJobs",
                         element: <AllJobsTable />,
-                        loader: () => axios.get(`${import.meta.env.VITE_API}/jobs`, {withCredentials: true}).then(res => res.data)
+                        loader: () => .get(`${import.meta.env.VITE_API}/jobs`, {withCredentials: true}).then(res => res.data)
                     },
                     {
                         path: "allUsers",

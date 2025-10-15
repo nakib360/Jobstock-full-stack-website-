@@ -3,12 +3,13 @@ import { useContext, useEffect, useState } from "react";
 import JobCard from "./JobCard";
 import AuthContext from "../Authantiation/AuthContext";
 import SkeletonLoader from "./SkeletonLoader";
+import toast from "react-hot-toast";
 
 const AppliedJobs = () => {
     const [jobs, setJobs] = useState([]);
     const [myAppliedJobs, setMyAppliedJobs] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { user } = useContext(AuthContext)
+    const { user, signOutUser, setShowLoginModel } = useContext(AuthContext)
 
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_API}/jobs`, {withCredentials: true})
@@ -17,12 +18,26 @@ const AppliedJobs = () => {
                 setJobs(res.data);
                 setLoading(false);
             })
+            .catch(error => {
+                if (error.response?.status === 401) {
+                  toast.error("Session expired! Please login again.");
+                  signOutUser();
+                  setShowLoginModel(true);
+                }
+              })
 
         axios.get(`${import.meta.env.VITE_API}/users?email=${user?.email}`, {withCredentials: true})
             .then(data => {
                 setMyAppliedJobs(data.data[0]?.myAppliedJobs)
             })
-    }, [user?.email])
+            .catch(error => {
+                if (error.response?.status === 401) {
+                  toast.error("Session expired! Please login again.");
+                  signOutUser();
+                  setShowLoginModel(true);
+                }
+              })
+    }, [user?.email, signOutUser, setShowLoginModel])
 
     let filteredJobs
     if (myAppliedJobs) {

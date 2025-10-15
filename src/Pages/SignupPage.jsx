@@ -22,7 +22,7 @@ const SignupPage = () => {
   const [passShow, setPassShow] = useState(!true);
   const [confirmPassShow, setConfirmPassShow] = useState(!true);
 
-  const { signInWithGoogle, signUpUser } = useContext(AuthContext);
+  const { signInWithGoogle, signUpUser, signOutUser, setShowLoginModel } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -114,7 +114,12 @@ const SignupPage = () => {
             window.scrollTo(0, 0);
           })
           .catch(err => {
-            console.error("Error creating user:", err);
+            // console.error("Error creating user:", err);
+            if (err.response?.status === 401) {
+              toast.error("Session expired! Please login again.");
+              signOutUser();
+              setShowLoginModel(true);
+            }
           })
       }).catch(() => {
         toast.error("Something went wrong!")
@@ -195,8 +200,13 @@ const SignupPage = () => {
             //console.log(res);
           })
       })
-      .catch(() => {
+      .catch((error) => {
         toast.error("Please try again!");
+        if (error.response?.status === 401) {
+          toast.error("Session expired! Please login again.");
+          signOutUser();
+          setShowLoginModel(true);
+        }
       })
   }
 

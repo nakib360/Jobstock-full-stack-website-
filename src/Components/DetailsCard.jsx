@@ -6,32 +6,53 @@ import toast from "react-hot-toast";
 
 const DetailsCard = ({ data }) => {
   const [isFavorited, setIsFavorited] = useState(false);
-  const { user } = useContext(AuthContext)
+  const { user, signOutUser, setShowLoginModel } = useContext(AuthContext)
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API}/users?email=${user?.email}`, {withCredentials: true})
+    axios.get(`${import.meta.env.VITE_API}/users?email=${user?.email}`, { withCredentials: true })
       .then(data => {
         setUserData(data.data[0]);
         //console.log(data)
       })
-  }, [user?.email]);
+      .catch(error => {
+        if (error.response?.status === 401) {
+          toast.error("Session expired! Please login again.");
+          signOutUser();
+          setShowLoginModel(true);
+        }
+      })
+  }, [user?.email, signOutUser, setShowLoginModel]);
 
   const toggleFavorite = () => {
     setIsFavorited(prev => !prev);
   };
 
   const handleApply = (userId) => {
-    axios.post(`${import.meta.env.VITE_API}/jobs/${data?._id}`, { userId }, {withCredentials: true})
+    axios.post(`${import.meta.env.VITE_API}/jobs/${data?._id}`, { userId }, { withCredentials: true })
       .then(res => {
         //console.log(res)
         toast.success(`${userData?.displayName} is successfully applied.`)
       })
+      .catch(error => {
+        if (error.response?.status === 401) {
+          toast.error("Session expired! Please login again.");
+          signOutUser();
+          setShowLoginModel(true);
+        }
+      })
 
-    axios.post(`${import.meta.env.VITE_API}/users/${userData?._id}`, { jobId: data._id }, {withCredentials: true})
+    axios.post(`${import.meta.env.VITE_API}/users/${userData?._id}`, { jobId: data._id }, { withCredentials: true })
       .then(res => {
         //console.log(res)
         toast.success(`${data?.jobName} is successfully applied.`)
+      })
+      .catch(error => {
+        if (error.response?.status === 401) {
+          toast.error("Session expired! Please login again.");
+          signOutUser();
+          setShowLoginModel(true);
+        }
       })
 
     // //console.log("UserId :", userId, ",", "jobid :", data?._id);

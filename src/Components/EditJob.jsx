@@ -4,7 +4,7 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
 const EditJob = ({ job, closeModal, hotUpdate }) => {
-  const { user } = useContext(AuthContext);
+  const { user, signOutUser, setShowLoginModel } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     jobType: "",
     jobName: "",
@@ -70,10 +70,10 @@ const EditJob = ({ job, closeModal, hotUpdate }) => {
           [name === "salaryMin"
             ? "min"
             : name === "salaryMax"
-            ? "max"
-            : name === "salaryCurrency"
-            ? "currency"
-            : "period"]: type === "checkbox" ? checked : value,
+              ? "max"
+              : name === "salaryCurrency"
+                ? "currency"
+                : "period"]: type === "checkbox" ? checked : value,
         },
       }));
     } else if (["city", "state", "country", "relocationRequired"].includes(name)) {
@@ -133,6 +133,11 @@ const EditJob = ({ job, closeModal, hotUpdate }) => {
       .catch((err) => {
         console.error(err);
         toast.error("Something went wrong!");
+        if (err.response?.status === 401) {
+          toast.error("Session expired! Please login again.");
+          signOutUser();
+          setShowLoginModel(true);
+        }
       });
   };
 

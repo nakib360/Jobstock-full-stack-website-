@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useLoaderData } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import toast from "react-hot-toast";
+import AuthContext from "../Authantiation/AuthContext";
 
 const AllUsersTable = () => {
   const loadedData = useLoaderData();
+  const { signOutUser, setShowLoginModel } = useContext(AuthContext);
+
   
   const [remainingUser, setRemainingUser] = useState(
     Array.isArray(loadedData) ? loadedData : loadedData?.users || []
@@ -35,10 +38,15 @@ const AllUsersTable = () => {
           setConfirmSubmit(false);
           setSelectedUserId(null);
         })
-        .catch(() => {
+        .catch((err) => {
           toast.error("Something went wrong!");
           setConfirmSubmit(false);
           setSelectedUserId(null);
+          if (err.response?.status === 401) {
+            toast.error("Session expired! Please login again.");
+            signOutUser();
+            setShowLoginModel(true);
+        }
         });
     }
   };
