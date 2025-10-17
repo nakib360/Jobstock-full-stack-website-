@@ -28,4 +28,14 @@
 <div>
     <img src="public/job-stock-668d6.web.app-JOBSTOCK-FindYourDreamJob(2).png"/>
 </div>
-<p>It is the All Jobs Page. In the top i used framer motion make a animation. Than sponsor section. Than Featured Jobs section. In the featured job section it will show random 3 jobs automatically from the jobs DB. Than our specialities. In the right side a animated image doing up and down. Than Our services section. In the left side also a animated image doing up and down by motion. Than choose What You need. Than Query section. At the last A footer section. </p>
+<p>It is the All Jobs Page. There are a user can show all of jobs in this website. In the top left a user can search Jobs by name. In the top right a user can sort jobs acording to thare ascending and discanding of salary.</p>
+
+<h3>Dashboard</h3>
+
+<img src="public/screencapture-job-stock-668d6-web-app-dashboard-profile-2025-10-17-11_49_07.png">
+<p>This is User profile a user can see his full identity he was submited.</p>
+<div style="display:flex; align-items:start;">
+    <img src="public/screencapture-job-stock-668d6-web-app-dashboard-postedJobs-2025-10-17-11_53_34.png">
+    <img src="public/Screenshot (72).png">
+</div>
+<p>Thare are a user can post his jobs.</p>
